@@ -1,0 +1,121 @@
+import { Fragment } from "react";
+import { contact, identity } from "@/content/profile";
+import Magnetic from "../motion/Magnetic";
+import { MaskLines } from "../motion/MaskText";
+import { Reveal } from "../motion/Reveal";
+
+export default function Contact() {
+  const lines = contact.heading.map((line, index) =>
+    index === contact.heading.length - 1 ? (
+      <Fragment key={index}>
+        {line}
+        <span className="text-ember">.</span>
+      </Fragment>
+    ) : (
+      line
+    ),
+  );
+
+  return (
+    <section
+      id="contact"
+      className="relative scroll-mt-24 overflow-hidden py-24 md:py-30"
+    >
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute -top-24 right-0 size-[36rem] rounded-full bg-ember/18 blur-[130px]" />
+        <div className="absolute -bottom-40 -left-20 size-[30rem] rounded-full bg-blood/45 blur-[120px]" />
+      </div>
+
+      <div className="shell">
+        <Reveal className="mb-8 flex items-center gap-4">
+          <span className="font-label text-sm tracking-[0.08em] text-ember">05</span>
+          <span aria-hidden className="h-px flex-1 bg-bone/12" />
+          <span className="font-label text-xs tracking-[0.18em] text-bone/45 uppercase">
+            Contact
+          </span>
+        </Reveal>
+
+        <h2 className="font-display text-display text-bone">
+          <MaskLines lines={lines} stagger={0.09} />
+        </h2>
+
+        <div className="mt-14 grid gap-12 md:mt-20 md:grid-cols-12">
+          <div className="min-w-0 md:col-span-7">
+            <Reveal>
+              <p className="max-w-[46ch] text-lead text-bone/65">{contact.blurb}</p>
+            </Reveal>
+
+            <Reveal delay={0.1}>
+              <a
+                href={`mailto:${contact.email}`}
+                className="group mt-10 inline-block text-xl font-semibold tracking-[-0.03em] break-words text-bone transition-colors duration-150 hover:text-glow sm:text-2xl md:text-4xl"
+              >
+                <span className="link-draw">{contact.email}</span>
+              </a>
+            </Reveal>
+
+            <Reveal delay={0.18}>
+              <Magnetic strength={0.3} className="mt-12 inline-block">
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="group inline-flex items-center gap-3 rounded-md bg-ember px-8 py-4 text-base font-semibold text-bone shadow-ember transition-colors duration-150 hover:bg-glow"
+                >
+                  Send an email
+                  <span
+                    aria-hidden
+                    className="transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
+                  >
+                    →
+                  </span>
+                </a>
+              </Magnetic>
+            </Reveal>
+          </div>
+
+          <div className="min-w-0 md:col-span-5">
+            <Reveal delay={0.12}>
+              <p className="font-label text-xs tracking-[0.18em] text-bone/45 uppercase">
+                Elsewhere
+              </p>
+
+              <ul className="mt-6 border-t border-bone/12">
+                {contact.socials.map((social) => (
+                  <li key={social.label}>
+                    <a
+                      href={social.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="group flex items-center justify-between gap-6 border-b border-bone/12 py-5 transition-colors duration-150 hover:text-glow"
+                    >
+                      <span className="text-lg font-semibold tracking-tight">
+                        {social.label}
+                      </span>
+                      <span className="flex items-center gap-3">
+                        <span className="font-label text-xs tracking-[0.1em] text-bone/40 group-hover:text-glow">
+                          {social.handle}
+                        </span>
+                        <span
+                          aria-hidden
+                          className="transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
+                        >
+                          →
+                        </span>
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+
+              <p className="mt-8 max-w-[34ch] text-sm text-bone/50">
+                Based in {identity.location}
+                {identity.availableForWork
+                  ? `. ${identity.availabilityNote}.`
+                  : "."}
+              </p>
+            </Reveal>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
