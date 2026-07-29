@@ -378,6 +378,6 @@ export const navLinks = [
 export const seo = {
   title: `${identity.fullName} · ${identity.currentRole}`,
   description: identity.intro,
-  /** Set this once you have a domain; used for canonical + OG URLs. */
-  url: "https://dexsen.com", // TODO: your real domain
+  /** Backs metadataBase: the canonical link and social share previews. */
+  url: "https://dexsen.xyz",
 };
