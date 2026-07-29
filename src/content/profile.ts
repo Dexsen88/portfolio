@@ -24,6 +24,8 @@ export type Role = {
   stack: string[];
   /** Earlier titles held at the same organisation. */
   previously?: { title: string; period: string }[];
+  /** Repos or write-ups produced during the role. */
+  links?: { label: string; href: string }[];
 };
 
 export type Study = {
@@ -140,26 +142,36 @@ export const experience: Role[] = [
   {
     company: "Alignerr",
     title: "Data Annotator",
-    period: "", // TODO: dates were not in the LinkedIn export
-    location: "",
+    period: "Apr 2026 to Jun 2026",
+    location: "Remote",
     summary:
-      "Annotate and review data used to train and evaluate AI models.",
+      "Annotated and reviewed data used to train and evaluate AI models.",
     highlights: [],
     stack: ["Data Annotation"],
   },
   {
     company: "Blibli.com",
     title: "Cybersecurity Engineer Intern",
-    period: "", // TODO: dates were not in the LinkedIn export
+    period: "Feb 2025 to Feb 2026",
     location: "Jakarta, ID",
     summary: "Security internship scoped to secure code.",
-    highlights: ["Scope: secure code."],
-    stack: ["Secure Code", "Application Security"],
+    highlights: [
+      "Built a site running locally to practise secure code hands on, using a local Moodle instance as the target application.",
+      "Kept the research and source material in an Obsidian vault.",
+    ],
+    stack: ["Secure Code", "Application Security", "Moodle"],
+    links: [
+      {
+        label: "ObsidianVault",
+        href: "https://github.com/Dexsen88/ObsidianVault",
+      },
+      { label: "Moodle", href: "https://github.com/Dexsen88/Moodle" },
+    ],
   },
   {
     company: "Cyber Smart Network Asia, PT",
     title: "Software Engineer Intern",
-    period: "", // TODO: dates were not in the LinkedIn export
+    period: "Aug 2024 to Sep 2024",
     location: "Jakarta, ID",
     summary:
       "Backend and frontend work alongside ERP research, ending in a routing project shipped with the team.",
@@ -187,7 +199,7 @@ export const experience: Role[] = [
   {
     company: "IPEKA",
     title: "Head of Promotions, SKIPIJAM REBORN",
-    period: "", // TODO: dates were not in the LinkedIn export
+    period: "Jan 2022 to May 2022",
     location: "Jakarta, ID",
     summary:
       "Ran paid promotion and fundraising for SKIPIJAM REBORN, an annual inter-school event.",

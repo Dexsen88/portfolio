@@ -129,6 +129,37 @@ export default function Experience() {
                       ))}
                     </ul>
 
+                    {role.links && role.links.length > 0 && (
+                      <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
+                        {role.links.map((link) => (
+                          <li key={link.href}>
+                            <a
+                              href={link.href}
+                              target="_blank"
+                              rel="noreferrer noopener"
+                              className="group/link inline-flex items-center gap-2 text-sm font-semibold text-bone/70 transition-colors duration-150 hover:text-glow"
+                            >
+                              {link.label}
+                              <svg
+                                viewBox="0 0 16 16"
+                                aria-hidden
+                                className="size-3.5 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
+                              >
+                                <path
+                                  d="M4 12L12 4M12 4H6M12 4V10"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="1.6"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
                     <ul className="mt-6 flex flex-wrap gap-2">
                       {role.stack.map((item) => (
                         <li
