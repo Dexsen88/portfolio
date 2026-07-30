@@ -125,6 +125,51 @@
     color: var(--color-bone);
   }
 
+  /* A thin, quiet scrollbar. The default chrome-grey bar is one of the
+     loudest giveaways that a dark site was not finished. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(247, 242, 242, 0.18) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(247, 242, 242, 0.16);
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(247, 242, 242, 0.3);
+  }
+
+  /* Headings should not be left with one orphaned word on the last line, and
+     paragraphs should not end on a single short word. */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Underlines that clear the descenders instead of cutting through them. */
+  a {
+    text-underline-offset: 0.22em;
+    text-decoration-thickness: 1px;
+  }
+
   :focus-visible {
     outline: 2px solid var(--color-glow);
     outline-offset: 2px;
@@ -248,6 +293,36 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.22),
     0 1px 2px rgba(0, 0, 0, 0.45),
     0 14px 30px -14px rgba(225, 29, 46, 0.55);
+}
+
+/* Border that is brightest along the top edge and fades toward the bottom,
+   as though lit from above. Reads far more like a physical panel than an
+   evenly coloured outline. */
+.edge-lit {
+  position: relative;
+}
+
+.edge-lit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    to bottom,
+    rgba(225, 29, 46, 0.5),
+    rgba(247, 242, 242, 0.07) 38%,
+    rgba(247, 242, 242, 0.02) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 /* Divider that fades out at both ends instead of stopping dead. */

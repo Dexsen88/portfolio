@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useTransform,
-  type Variants,
-} from "motion/react";
+import { motion, useScroll, useTransform, type Variants } from "motion/react";
 import { useRef } from "react";
 import { skills } from "@/content/profile";
 import SectionHeading from "../SectionHeading";
@@ -42,9 +36,16 @@ function Group({
     target: ref,
     offset: ["start end", "end start"],
   });
-  const drift = useSpring(
-    useTransform(scrollYProgress, [0, 1], reverse ? [34, -34] : [-34, 34]),
-    { stiffness: 120, damping: 30 },
+  /**
+   * Read straight off scroll progress with no spring. Five springs, one per
+   * row, meant five animations ticking through every scroll frame. Lenis
+   * already smooths the scroll position itself, so the spring was buying
+   * almost nothing for five times the cost.
+   */
+  const drift = useTransform(
+    scrollYProgress,
+    [0, 1],
+    reverse ? [28, -28] : [-28, 28],
   );
 
   return (

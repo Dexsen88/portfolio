@@ -43,6 +43,10 @@ export default function Magnetic({
       style={{ x: springX, y: springY }}
       onPointerMove={handleMove}
       onPointerLeave={reset}
+      /* A small give on press. Controls that do not acknowledge the click
+         feel like images of controls. */
+      whileTap={{ scale: 0.97 }}
+      transition={{ type: "spring", stiffness: 500, damping: 30 }}
     >
       {children}
     </motion.div>

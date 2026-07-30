@@ -124,12 +124,39 @@ export default function Embers() {
 
     const onVisibility = () => (document.hidden ? stop() : start());
 
-    start();
+    /**
+     * Only run while the first screen is in view.
+     *
+     * The embers are a top-of-page atmosphere; further down they sit behind
+     * opaque content and cannot be seen at all. Previously the loop cleared
+     * and recomposited a full-screen surface every frame for the entire
+     * length of the page, which is a permanent tax on exactly the scrolling
+     * that needs the headroom.
+     */
+    const hero = document.getElementById("top");
+    const observer = hero
+      ? new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting && !document.hidden) {
+              start();
+            } else {
+              stop();
+              ctx.clearRect(0, 0, width, height);
+            }
+          },
+          { threshold: 0 },
+        )
+      : null;
+
+    if (observer && hero) observer.observe(hero);
+    else start();
+
     window.addEventListener("resize", resize);
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       stop();
+      observer?.disconnect();
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibility);
     };

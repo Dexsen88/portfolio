@@ -59,6 +59,7 @@ export default function Gallery({ shots }: { shots: Shot[] }) {
               onClick={() => setOpenIndex(index)}
               aria-label={`View larger: ${shot.alt}`}
               whileHover={{ y: -4 }}
+              whileTap={{ scale: 0.985 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="panel-raised group/shot relative block aspect-[4/3] w-full cursor-pointer overflow-hidden rounded-lg border border-bone/10 bg-panel transition-colors duration-300 hover:border-ember/40"
             >

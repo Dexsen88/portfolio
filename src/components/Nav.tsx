@@ -13,6 +13,7 @@ export default function Nav() {
   const [condensed, setCondensed] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeId, setActiveId] = useState("");
   const lastY = useRef(0);
 
   useMotionValueEvent(scrollY, "change", (current) => {
@@ -38,6 +39,38 @@ export default function Nav() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  /**
+   * Marks which section you are currently reading.
+   *
+   * Driven by IntersectionObserver rather than a scroll handler, so it costs
+   * nothing per frame. The asymmetric rootMargin narrows the trigger to a band
+   * across the middle of the screen, which is what makes the indicator change
+   * when a section genuinely takes over rather than the instant its top edge
+   * appears.
+   */
+  useEffect(() => {
+    const sections = navLinks
+      .map((link) => document.getElementById(link.href.slice(1)))
+      .filter((node): node is HTMLElement => Boolean(node));
+
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const topMost = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort(
+            (a, b) => a.boundingClientRect.top - b.boundingClientRect.top,
+          )[0];
+        if (topMost) setActiveId(topMost.target.id);
+      },
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -73,13 +106,35 @@ export default function Nav() {
 
             <ul className="hidden items-center gap-8 md:flex">
               {navLinks.map((link) => (
-                <li key={link.href}>
+                <li key={link.href} className="relative">
                   <a
                     href={link.href}
-                    className="group font-label text-xs tracking-[0.14em] text-bone/60 uppercase transition-colors duration-150 hover:text-bone"
+                    aria-current={
+                      activeId === link.href.slice(1) ? "true" : undefined
+                    }
+                    className={`group font-label text-xs tracking-[0.14em] uppercase transition-colors duration-300 hover:text-bone ${
+                      activeId === link.href.slice(1)
+                        ? "text-bone"
+                        : "text-bone/55"
+                    }`}
                   >
                     <FlipText text={link.label} />
                   </a>
+                  {activeId === link.href.slice(1) && (
+                    /* One element shared across all the links: `layoutId`
+                       makes Motion slide it from the previous link to this
+                       one rather than cross-fading two separate bars. */
+                    <motion.span
+                      layoutId="nav-active"
+                      aria-hidden
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 32,
+                      }}
+                      className="absolute -bottom-2 left-0 h-px w-full bg-ember"
+                    />
+                  )}
                 </li>
               ))}
             </ul>
