@@ -37,20 +37,30 @@ export default function Gallery({ shots }: { shots: Shot[] }) {
       }`}
     >
       {visible.map((shot, index) => (
-        <li key={shot.src}>
+        /* The entrance deliberately never touches opacity or clip-path.
+           A scroll-triggered reveal depends on IntersectionObserver firing,
+           and if it does not the tile must still be plainly visible — an
+           un-animated photo sitting 14px low is invisible as a defect,
+           whereas opacity:0 loses the image entirely. Earlier versions hid
+           these behind clip-path and opacity and shipped blank galleries.
+
+           The entrance is on the <li> and the hover on the <figure>, so the
+           two never fight over the same transform. */
+        <motion.li
+          key={shot.src}
+          initial={{ y: 14, scale: 0.97 }}
+          whileInView={{ y: 0, scale: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{
+            duration: 0.7,
+            delay: index * 0.09,
+            ease: [0.16, 1, 0.3, 1],
+          }}
+        >
           <motion.figure
             data-cursor-label="View"
-            /* Wipes open from the bottom rather than fading, so the grid
-               builds itself tile by tile. */
-            initial={{ clipPath: "inset(100% 0 0 0)", y: 24 }}
-            whileInView={{ clipPath: "inset(0% 0 0 0)", y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
             whileHover={{ y: -4 }}
-            transition={{
-              duration: 0.8,
-              delay: index * 0.09,
-              ease: [0.16, 1, 0.3, 1],
-            }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="group/shot relative aspect-[4/3] overflow-hidden rounded-lg border border-bone/12 bg-panel"
           >
             {/* eslint-disable-next-line @next/next/no-img-element --
@@ -78,7 +88,7 @@ export default function Gallery({ shots }: { shots: Shot[] }) {
               className="pointer-events-none absolute inset-0 bg-ember/10 opacity-100 transition-opacity duration-300 group-hover/shot:opacity-0"
             />
           </motion.figure>
-        </li>
+        </motion.li>
       ))}
     </ul>
   );

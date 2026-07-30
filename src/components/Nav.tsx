@@ -124,9 +124,11 @@ export default function Nav() {
         {menuOpen && (
           <motion.div
             key="menu"
-            initial={{ clipPath: "inset(0 0 100% 0)" }}
-            animate={{ clipPath: "inset(0 0 0% 0)" }}
-            exit={{ clipPath: "inset(0 0 100% 0)" }}
+            /* Slides rather than clipping. The menu appearing at all must not
+               hinge on motion interpolating a clip-path string. */
+            initial={{ y: "-100%" }}
+            animate={{ y: "0%" }}
+            exit={{ y: "-100%" }}
             transition={{ duration: 0.5, ease: EASE_PITCH }}
             className="fixed inset-0 z-40 flex flex-col justify-between bg-panel px-6 pt-28 pb-10 md:hidden"
           >
