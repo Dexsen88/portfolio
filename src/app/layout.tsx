@@ -41,9 +41,11 @@ export default function RootLayout({
     <html lang="en" className="antialiased">
       <body className="grain min-h-dvh">
         {/* Reveal animations render from a hidden state. Without JS there is
-            nothing to animate them in, so unhide everything up front. */}
+            nothing to animate them in, so unhide everything up front. The
+            clip-path selector matters as much as opacity: the gallery tiles
+            open with inset() and would otherwise stay clipped shut. */}
         <noscript>
-          <style>{`[style*="opacity"]{opacity:1!important;transform:none!important}`}</style>
+          <style>{`[style*="opacity"],[style*="clip-path"]{opacity:1!important;clip-path:none!important;transform:none!important}`}</style>
         </noscript>
         <div aria-hidden className="ambience" />
         <Curtain />
