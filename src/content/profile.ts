@@ -156,17 +156,17 @@ export const experience: Role[] = [
     ],
     images: [
       {
-        src: "/work/the5ers-funded-trader.jpg",
+        src: "/work/the5ers-funded-trader.webp",
         alt: "The5ers Officially Funded Trader certificate, High Stakes 60K, April 2025",
         fit: "contain",
       },
       {
-        src: "/work/the5ers-quality-trade.jpg",
+        src: "/work/the5ers-quality-trade.webp",
         alt: "The5ers Quality Trade Score 90+ badge for XAUUSD, July 2026",
         fit: "contain",
       },
       {
-        src: "/work/the5ers-payouts.jpg",
+        src: "/work/the5ers-payouts.webp",
         alt: "The5ers total payouts badge, June 2026",
         fit: "contain",
       },
@@ -202,8 +202,10 @@ export const experience: Role[] = [
     ],
     images: [
       {
-        src: "/work/blibli.jpg",
+        src: "/work/blibli.webp",
         alt: "The security team at the Blibli and tiket.com office in Jakarta",
+        // 16:9 source, so contain rather than crop people off the ends.
+        fit: "contain",
       },
     ],
   },
@@ -222,7 +224,7 @@ export const experience: Role[] = [
     stack: ["Python", "Go", "Next.js", "Odoo", "ERP", "JSON", "HTML"],
     images: [
       {
-        src: "/work/cyber-smart-network-asia.jpg",
+        src: "/work/cyber-smart-network-asia.webp",
         alt: "The intern team at the Cyber Smart Network Asia office",
       },
     ],
@@ -305,12 +307,14 @@ export const projects: Project[] = [
     featured: true,
     images: [
       {
-        src: "/work/sensegame-1.jpg",
+        src: "/work/sensegame-1.webp",
         alt: "SENSEGAME.ID team meeting",
       },
       {
-        src: "/work/sensegame-2.jpg",
+        src: "/work/sensegame-2.webp",
         alt: "Signing the SENSEGAME.ID partnership agreement",
+        // Portrait source in a landscape tile, so contain to keep it whole.
+        fit: "contain",
       },
     ],
   },
