@@ -74,7 +74,16 @@ export default function Gallery({ shots }: { shots: Shot[] }) {
               }}
               src={shot.src}
               alt={shot.alt}
-              loading="lazy"
+              /* NOT lazy, deliberately. With loading="lazy" these were never
+                 fetched at all: inspected live, every tile reported
+                 complete=false and naturalWidth=0 with opacity 1 and a
+                 correct box, even after being scrolled through. The portrait,
+                 which is eager, loads fine and is the control case.
+                 Seven CDN-cached WebPs totalling ~1.2MB is a cheaper price
+                 than a gallery that does not appear. Low priority and async
+                 decode keep them out of the critical path. */
+              decoding="async"
+              fetchPriority="low"
               onError={() => markBroken(shot.src)}
               className={`size-full transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/shot:scale-[1.03] ${
                 shot.fit === "contain" ? "object-contain p-2" : "object-cover"
