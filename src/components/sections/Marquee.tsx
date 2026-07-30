@@ -1,3 +1,13 @@
+"use client";
+
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+  useVelocity,
+} from "motion/react";
 import { marqueeWords } from "@/content/profile";
 
 function Track({ reverse = false }: { reverse?: boolean }) {
@@ -24,8 +34,33 @@ function Track({ reverse = false }: { reverse?: boolean }) {
   );
 }
 
-/** Full-bleed band. Two tracks moving against each other. */
+/**
+ * Full-bleed band, two tracks running against each other.
+ *
+ * The CSS animation supplies the constant drift; scroll velocity is layered
+ * on top as a skew and a slight horizontal shove, so throwing the page
+ * around visibly drags the type with it. Velocity is spring-smoothed, or a
+ * fast flick would snap the skew instead of easing it.
+ */
 export default function Marquee() {
+  const reduced = useReducedMotion();
+  const { scrollY } = useScroll();
+  const rawVelocity = useVelocity(scrollY);
+  const velocity = useSpring(rawVelocity, {
+    stiffness: 260,
+    damping: 42,
+    mass: 0.4,
+  });
+
+  const skew = useTransform(velocity, [-2500, 0, 2500], [7, 0, -7], {
+    clamp: true,
+  });
+  const shove = useTransform(velocity, [-2500, 0, 2500], [60, 0, -60], {
+    clamp: true,
+  });
+
+  const style = reduced ? undefined : { skewX: skew, x: shove };
+
   return (
     <section
       aria-hidden
@@ -35,12 +70,14 @@ export default function Marquee() {
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ember/12 via-transparent to-ember/12"
       />
-      <div className="relative flex overflow-hidden">
-        <Track />
-      </div>
-      <div className="relative mt-3 flex overflow-hidden opacity-40">
-        <Track reverse />
-      </div>
+      <motion.div style={style} className="relative will-change-transform">
+        <div className="flex overflow-hidden">
+          <Track />
+        </div>
+        <div className="mt-3 flex overflow-hidden opacity-40">
+          <Track reverse />
+        </div>
+      </motion.div>
     </section>
   );
 }

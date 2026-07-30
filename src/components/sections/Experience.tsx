@@ -49,12 +49,32 @@ function Rail({ children }: { children: ReactNode }) {
  * marker has to be pulled back by that same 3.5rem — otherwise it lands on the
  * padding edge and covers the first character of the date.
  */
+/**
+ * Sits on the rail, not on the list item. The <ol> carries `md:pl-14`, so the
+ * marker has to be pulled back by that same 3.5rem.
+ *
+ * Ignites as the scroll-drawn rail reaches it: dim and small until the row
+ * enters view, then it snaps to full red with a glow ring behind it.
+ */
 function Marker() {
   return (
-    <span
+    <motion.span
       aria-hidden
-      className="absolute top-2.5 hidden size-3 -translate-x-1/2 rounded-full bg-ember ring-4 ring-void md:-left-14 md:block"
-    />
+      initial={{ scale: 0.4, backgroundColor: "#4a060e" }}
+      whileInView={{ scale: 1, backgroundColor: "#e11d2e" }}
+      viewport={{ once: true, amount: 0.6 }}
+      transition={{ type: "spring", stiffness: 320, damping: 18 }}
+      className="absolute top-2.5 hidden size-3 -translate-x-1/2 rounded-full ring-4 ring-void md:-left-14 md:block"
+    >
+      <motion.span
+        aria-hidden
+        initial={{ opacity: 0, scale: 1 }}
+        whileInView={{ opacity: [0, 0.7, 0], scale: [1, 3.2, 3.2] }}
+        viewport={{ once: true, amount: 0.6 }}
+        transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute inset-0 rounded-full bg-ember"
+      />
+    </motion.span>
   );
 }
 

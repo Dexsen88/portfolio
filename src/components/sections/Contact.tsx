@@ -1,21 +1,9 @@
-import { Fragment } from "react";
 import { contact, identity } from "@/content/profile";
 import Magnetic from "../motion/Magnetic";
-import { MaskLines } from "../motion/MaskText";
+import { MaskChars } from "../motion/MaskText";
 import { Reveal } from "../motion/Reveal";
 
 export default function Contact() {
-  const lines = contact.heading.map((line, index) =>
-    index === contact.heading.length - 1 ? (
-      <Fragment key={index}>
-        {line}
-        <span className="text-ember">.</span>
-      </Fragment>
-    ) : (
-      line
-    ),
-  );
-
   return (
     <section
       id="contact"
@@ -35,8 +23,11 @@ export default function Contact() {
           </span>
         </Reveal>
 
-        <h2 className="font-display text-display text-bone">
-          <MaskLines lines={lines} stagger={0.09} />
+        <h2 className="text-bloom font-display text-display text-bone">
+          <MaskChars
+            lines={contact.heading}
+            tail={<span className="text-ember">.</span>}
+          />
         </h2>
 
         <div className="mt-14 grid gap-12 md:mt-20 md:grid-cols-12">

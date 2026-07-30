@@ -173,7 +173,11 @@
 }
 
 /* Ambient red wash + vignette, fixed behind everything. This is what
-   gives the page its "lit from off-camera" feel. */
+   gives the page its "lit from off-camera" feel.
+
+   --light-x / --light-y are driven by PointerLight so the key light
+   follows the cursor. They fall back to a fixed position, which is what
+   touch devices and no-JS visitors get. */
 .ambience {
   position: fixed;
   inset: 0;
@@ -181,9 +185,9 @@
   pointer-events: none;
   background:
     radial-gradient(
-      60rem 40rem at 78% 8%,
-      rgba(225, 29, 46, 0.22),
-      transparent 65%
+      55rem 40rem at var(--light-x, 78%) var(--light-y, 10%),
+      rgba(225, 29, 46, 0.26),
+      transparent 62%
     ),
     radial-gradient(
       45rem 45rem at 8% 42%,
@@ -206,6 +210,55 @@
     transparent 40%,
     rgba(0, 0, 0, 0.72) 100%
   );
+}
+
+/* Opening curtain.
+
+   Deliberately pure CSS with `forwards` fill, not a motion component: if it
+   were JS-driven and anything threw, the overlay would sit there hiding the
+   entire site. A keyframe cannot fail that way. */
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  background-color: var(--color-void);
+  animation: curtain-lift 900ms cubic-bezier(0.76, 0, 0.24, 1) 250ms forwards;
+}
+
+.curtain > span {
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--color-bone);
+  animation: curtain-word 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes curtain-lift {
+  to {
+    transform: translate3d(0, -101%, 0);
+    visibility: hidden;
+  }
+}
+
+@keyframes curtain-word {
+  0% {
+    opacity: 0;
+    transform: translateY(0.4em);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-0.3em);
+  }
+}
+
+/* Red bloom behind large type, used on the hero and contact headlines */
+.text-bloom {
+  text-shadow: 0 0 60px rgba(225, 29, 46, 0.28);
 }
 
 /* Fine film grain over the whole page */
@@ -302,8 +355,15 @@
 @media (prefers-reduced-motion: reduce) {
   .marquee-track,
   .marquee-track-reverse,
-  .pulse-ring {
+  .pulse-ring,
+  .curtain > span {
     animation: none !important;
+  }
+
+  /* Skip the reveal entirely rather than sliding a full-screen panel */
+  .curtain {
+    animation: none !important;
+    visibility: hidden;
   }
 
   html:not(.lenis) {

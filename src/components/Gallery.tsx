@@ -33,11 +33,21 @@ export default function Gallery({ shots }: { shots: Shot[] }) {
         single ? "max-w-xl" : "sm:grid-cols-2 lg:grid-cols-3"
       }`}
     >
-      {visible.map((shot) => (
+      {visible.map((shot, index) => (
         <li key={shot.src}>
           <motion.figure
+            /* Wipes open from the bottom rather than fading, so the grid
+               builds itself tile by tile. */
+            initial={{ clipPath: "inset(100% 0 0 0)", y: 24 }}
+            whileInView={{ clipPath: "inset(0% 0 0 0)", y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
             whileHover={{ y: -4 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            transition={{
+              duration: 0.8,
+              delay: index * 0.09,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            data-cursor-label={loaded.includes(shot.src) ? "View" : undefined}
             className={`group/shot relative overflow-hidden rounded-lg ${
               loaded.includes(shot.src)
                 ? "aspect-[4/3] border border-bone/12 bg-panel"

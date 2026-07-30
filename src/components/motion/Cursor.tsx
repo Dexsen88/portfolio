@@ -20,6 +20,7 @@ export default function Cursor() {
 
   const [visible, setVisible] = useState(false);
   const [hovering, setHovering] = useState(false);
+  const [label, setLabel] = useState("");
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -51,9 +52,17 @@ export default function Cursor() {
       }
 
       setVisible(true);
-      setHovering(
-        Boolean((event.target as HTMLElement | null)?.closest?.(INTERACTIVE)),
-      );
+
+      const target = event.target as HTMLElement | null;
+      const hit = target?.closest?.(INTERACTIVE) ?? null;
+      setHovering(Boolean(hit));
+
+      // Anything can name the cursor by carrying data-cursor-label.
+      const labelled = target?.closest?.("[data-cursor-label]") as
+        | HTMLElement
+        | null
+        | undefined;
+      setLabel(labelled?.dataset.cursorLabel ?? "");
     };
 
     const onLeave = () => setVisible(false);
@@ -82,8 +91,8 @@ export default function Cursor() {
         style={{ x: ringX, y: ringY, translateX: "-50%", translateY: "-50%" }}
         initial={{ opacity: 0, width: 34, height: 34 }}
         animate={{
-          width: hovering ? 56 : 34,
-          height: hovering ? 56 : 34,
+          width: label ? 86 : hovering ? 56 : 34,
+          height: label ? 86 : hovering ? 56 : 34,
           opacity: visible ? 1 : 0,
         }}
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
@@ -99,6 +108,17 @@ export default function Cursor() {
         }}
         transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
       />
+
+      {/* Word inside the ring, e.g. "Open" over a project card */}
+      <motion.div
+        className="absolute top-0 left-0 font-label text-[0.65rem] tracking-[0.16em] whitespace-nowrap text-white uppercase"
+        style={{ x: ringX, y: ringY, translateX: "-50%", translateY: "-50%" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: label && visible ? 1 : 0 }}
+        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+      >
+        {label}
+      </motion.div>
     </div>
   );
 }

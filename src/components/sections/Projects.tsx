@@ -1,7 +1,15 @@
 "use client";
 
-import { motion, useMotionTemplate, useMotionValue } from "motion/react";
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+} from "motion/react";
 import { projects, type Project } from "@/content/profile";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import Gallery from "../Gallery";
 import SectionHeading from "../SectionHeading";
 import { RevealGroup, RevealItem } from "../motion/Reveal";
@@ -25,32 +33,67 @@ function ArrowIcon() {
   );
 }
 
+const TILT = 9; // degrees at the very edge of the card
+
 function Card({ project, index }: { project: Project; index: number }) {
   const featured = Boolean(project.featured);
+  const reduced = useReducedMotion();
+  // Touch drags fire pointermove too, which would tip the card while the
+  // visitor is simply trying to scroll past it.
+  const finePointer = useMediaQuery("(hover: hover) and (pointer: fine)");
+  const tilt = finePointer && !reduced;
 
   // Spotlight tracks the pointer across the card surface.
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const spotlight = useMotionTemplate`radial-gradient(420px circle at ${mouseX}px ${mouseY}px, rgba(225,29,46,0.16), transparent 70%)`;
 
+  // Pointer position as -0.5..0.5 of the card, driving the tilt.
+  const offsetX = useMotionValue(0);
+  const offsetY = useMotionValue(0);
+  const spring = { stiffness: 200, damping: 22, mass: 0.5 };
+  const rotateY = useSpring(
+    useTransform(offsetX, [-0.5, 0.5], [-TILT, TILT]),
+    spring,
+  );
+  const rotateX = useSpring(
+    useTransform(offsetY, [-0.5, 0.5], [TILT, -TILT]),
+    spring,
+  );
+
   const handleMove = (event: React.PointerEvent<HTMLElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
     mouseX.set(event.clientX - rect.left);
     mouseY.set(event.clientY - rect.top);
+    offsetX.set((event.clientX - rect.left) / rect.width - 0.5);
+    offsetY.set((event.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const handleLeave = () => {
+    offsetX.set(0);
+    offsetY.set(0);
   };
 
   return (
     <RevealItem className={`min-w-0 ${featured ? "md:col-span-2" : ""}`}>
-      <motion.article
-        onPointerMove={handleMove}
-        whileHover={{ y: -6 }}
-        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className={`group relative flex h-full flex-col overflow-hidden rounded-xl border p-8 md:p-10 ${
-          featured
-            ? "border-ember/40 bg-gradient-to-br from-blood/40 via-panel to-panel"
-            : "border-bone/12 bg-panel/50 hover:border-ember/40 hover:shadow-card"
-        }`}
-      >
+      {/* Perspective has to live on an ancestor, or each card's rotation is
+          flattened and reads as a plain skew. */}
+      <div className="h-full [perspective:1200px]">
+        <motion.article
+          data-cursor-label={project.href || project.repo ? "Open" : undefined}
+          onPointerMove={handleMove}
+          onPointerLeave={handleLeave}
+          style={
+            tilt ? { rotateX, rotateY, transformStyle: "preserve-3d" } : undefined
+          }
+          whileHover={{ y: -6 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className={`group relative flex h-full flex-col overflow-hidden rounded-xl border p-8 will-change-transform md:p-10 ${
+            featured
+              ? "border-ember/40 bg-gradient-to-br from-blood/40 via-panel to-panel"
+              : "border-bone/12 bg-panel/50 hover:border-ember/40 hover:shadow-card"
+          }`}
+        >
         <motion.div
           aria-hidden
           style={{ background: spotlight }}
@@ -136,7 +179,8 @@ function Card({ project, index }: { project: Project; index: number }) {
             )}
           </div>
         )}
-      </motion.article>
+        </motion.article>
+      </div>
     </RevealItem>
   );
 }

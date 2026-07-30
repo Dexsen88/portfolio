@@ -1,10 +1,16 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { Fragment, useRef } from "react";
+import {
+  motion,
+  useMotionTemplate,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "motion/react";
+import { useRef } from "react";
 import { identity } from "@/content/profile";
 import Magnetic from "../motion/Magnetic";
-import { MaskLines } from "../motion/MaskText";
+import { MaskChars } from "../motion/MaskText";
 
 const EASE_PITCH = [0.16, 1, 0.3, 1] as const;
 
@@ -21,17 +27,10 @@ export default function Hero() {
   const lightY = useTransform(scrollYProgress, [0, 1], ["0%", "38%"]);
   const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-
-  const lines = identity.headline.map((line, index) =>
-    index === identity.headline.length - 1 ? (
-      <Fragment key={index}>
-        {line}
-        <span className="text-ember">.</span>
-      </Fragment>
-    ) : (
-      line
-    ),
-  );
+  // Sinking away rather than just sliding: the hero recedes and defocuses.
+  const contentScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
+  const blurPx = useTransform(scrollYProgress, [0, 1], [0, 7]);
+  const contentBlur = useMotionTemplate`blur(${blurPx}px)`;
 
   return (
     <section
@@ -50,7 +49,12 @@ export default function Hero() {
       </motion.div>
 
       <motion.div
-        style={{ y: reduced ? 0 : contentY, opacity: reduced ? 1 : contentOpacity }}
+        style={{
+          y: reduced ? 0 : contentY,
+          opacity: reduced ? 1 : contentOpacity,
+          scale: reduced ? 1 : contentScale,
+          filter: reduced ? "none" : contentBlur,
+        }}
         className="shell relative w-full"
       >
         {/* Eyebrow */}
@@ -78,8 +82,13 @@ export default function Hero() {
         </motion.div>
 
         {/* The headline — the whole page is built around this block */}
-        <h1 className="font-display text-display text-bone">
-          <MaskLines lines={lines} trigger="mount" delay={0.15} stagger={0.1} />
+        <h1 className="text-bloom font-display text-display text-bone">
+          <MaskChars
+            lines={identity.headline}
+            tail={<span className="text-ember">.</span>}
+            trigger="mount"
+            delay={0.55}
+          />
         </h1>
 
         {/* Intro + actions */}
