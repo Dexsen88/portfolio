@@ -181,7 +181,8 @@
 .ambience {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  /* Behind the ember canvas, which sits at -1. */
+  z-index: -2;
   pointer-events: none;
   background:
     radial-gradient(

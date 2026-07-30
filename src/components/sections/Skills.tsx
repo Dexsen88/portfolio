@@ -1,6 +1,14 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+  type Variants,
+} from "motion/react";
+import { useRef } from "react";
 import { skills } from "@/content/profile";
 import SectionHeading from "../SectionHeading";
 import { Reveal } from "../motion/Reveal";
@@ -16,6 +24,63 @@ const pillVariants: Variants = {
   hidden: { opacity: 0, y: 14 },
   shown: { opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE_PITCH } },
 };
+
+/**
+ * One row of pills. Alternate rows slide in opposite directions as the
+ * section passes, so the block shears gently instead of sitting still.
+ */
+function Group({
+  group,
+  items,
+  reverse,
+}: {
+  group: string;
+  items: string[];
+  reverse: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const drift = useSpring(
+    useTransform(scrollYProgress, [0, 1], reverse ? [34, -34] : [-34, 34]),
+    { stiffness: 120, damping: 30 },
+  );
+
+  return (
+    <div
+      ref={ref}
+      className="grid gap-5 border-b border-bone/12 py-8 md:grid-cols-12 md:gap-8 md:py-10"
+    >
+      <Reveal className="md:col-span-3" distance={16}>
+        <h3 className="text-xl font-semibold tracking-tight text-glow">{group}</h3>
+      </Reveal>
+
+      <motion.ul
+        variants={listVariants}
+        initial="hidden"
+        whileInView="shown"
+        viewport={{ once: true, amount: 0.3 }}
+        style={reduced ? undefined : { x: drift }}
+        className="flex flex-wrap gap-3 md:col-span-9"
+      >
+        {items.map((item) => (
+          <motion.li
+            key={item}
+            variants={pillVariants}
+            whileHover={{ y: -3, scale: 1.04 }}
+            transition={{ type: "spring", stiffness: 420, damping: 22 }}
+            className="rounded-md border border-bone/15 px-4 py-2 text-sm font-medium text-bone/85 transition-colors duration-150 hover:border-ember hover:bg-ember hover:text-bone"
+          >
+            {item}
+          </motion.li>
+        ))}
+      </motion.ul>
+    </div>
+  );
+}
 
 export default function Skills() {
   return (
@@ -36,35 +101,13 @@ export default function Skills() {
         />
 
         <div className="border-t border-bone/12">
-          {skills.map((group) => (
-            <div
+          {skills.map((group, index) => (
+            <Group
               key={group.group}
-              className="grid gap-5 border-b border-bone/12 py-8 md:grid-cols-12 md:gap-8 md:py-10"
-            >
-              <Reveal className="md:col-span-3" distance={16}>
-                <h3 className="text-xl font-semibold tracking-tight text-glow">
-                  {group.group}
-                </h3>
-              </Reveal>
-
-              <motion.ul
-                variants={listVariants}
-                initial="hidden"
-                whileInView="shown"
-                viewport={{ once: true, margin: "-60px" }}
-                className="flex flex-wrap gap-3 md:col-span-9"
-              >
-                {group.items.map((item) => (
-                  <motion.li
-                    key={item}
-                    variants={pillVariants}
-                    className="rounded-md border border-bone/15 px-4 py-2 text-sm font-medium text-bone/85 transition-colors duration-150 hover:border-ember hover:bg-ember hover:text-bone"
-                  >
-                    {item}
-                  </motion.li>
-                ))}
-              </motion.ul>
-            </div>
+              group={group.group}
+              items={group.items}
+              reverse={index % 2 === 1}
+            />
           ))}
         </div>
       </div>

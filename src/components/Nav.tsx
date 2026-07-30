@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { contact, identity, navLinks } from "@/content/profile";
+import FlipText from "./FlipText";
 import Magnetic from "./motion/Magnetic";
 
 const EASE_PITCH = [0.16, 1, 0.3, 1] as const;
@@ -75,9 +76,9 @@ export default function Nav() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="link-draw font-label text-xs tracking-[0.14em] text-bone/60 uppercase transition-colors duration-150 hover:text-bone"
+                    className="group font-label text-xs tracking-[0.14em] text-bone/60 uppercase transition-colors duration-150 hover:text-bone"
                   >
-                    {link.label}
+                    <FlipText text={link.label} />
                   </a>
                 </li>
               ))}

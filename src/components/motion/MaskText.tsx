@@ -151,13 +151,20 @@ export function MaskChars({
             {/* Spaces are swapped for U+00A0 below: a normal space collapses
                 to nothing once each glyph becomes an inline-block. */}
             {line.split("").map((char, charIndex) => (
-              <motion.span
+              /* Two nested spans on purpose. Motion owns the inner
+                 transform for the reveal, so the hover lift has to live on
+                 an outer element or the inline style it writes wins. */
+              <span
                 key={charIndex}
+                className="inline-block transition-[transform,color] duration-300 ease-out hover:-translate-y-[0.07em] hover:text-ember"
+              >
+              <motion.span
                 variants={variants}
                 className="inline-block origin-bottom will-change-transform"
               >
                 {char === " " ? " " : char}
               </motion.span>
+              </span>
             ))}
             {lineIndex === lines.length - 1 && tail}
             {/* Keeps the accessible name from running lines together. */}{" "}

@@ -1,7 +1,11 @@
+"use client";
+
+import { motion } from "motion/react";
 import { contact, identity } from "@/content/profile";
 import Magnetic from "../motion/Magnetic";
 import { MaskChars } from "../motion/MaskText";
 import { Reveal } from "../motion/Reveal";
+import Scramble from "../motion/Scramble";
 
 export default function Contact() {
   return (
@@ -15,13 +19,25 @@ export default function Contact() {
       </div>
 
       <div className="shell">
-        <Reveal className="mb-8 flex items-center gap-4">
-          <span className="font-label text-sm tracking-[0.08em] text-ember">05</span>
-          <span aria-hidden className="h-px flex-1 bg-bone/12" />
-          <span className="font-label text-xs tracking-[0.18em] text-bone/45 uppercase">
-            Contact
-          </span>
-        </Reveal>
+        <div className="mb-8 flex items-center gap-4">
+          <Reveal distance={0}>
+            <span className="font-label text-sm tracking-[0.08em] text-ember">05</span>
+          </Reveal>
+          <motion.span
+            aria-hidden
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true, amount: 0.8 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="h-px flex-1 origin-left bg-gradient-to-r from-ember/70 to-bone/12"
+          />
+          <Reveal distance={0} delay={0.1}>
+            <Scramble
+              text="Contact"
+              className="font-label text-xs tracking-[0.18em] text-bone/45 uppercase"
+            />
+          </Reveal>
+        </div>
 
         <h2 className="text-bloom font-display text-display text-bone">
           <MaskChars

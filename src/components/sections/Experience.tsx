@@ -11,6 +11,7 @@ import {
 import Gallery from "../Gallery";
 import SectionHeading from "../SectionHeading";
 import { Reveal } from "../motion/Reveal";
+import Scramble from "../motion/Scramble";
 
 /**
  * Vertical rail whose red fill is drawn by scroll position, so the timeline
@@ -206,9 +207,10 @@ export default function Experience() {
       {/* Education */}
       <div className="mt-24 md:mt-32">
         <Reveal className="mb-12 flex items-center gap-4">
-          <span className="font-label text-xs tracking-[0.18em] text-bone/45 uppercase">
-            Education
-          </span>
+          <Scramble
+            text="Education"
+            className="font-label text-xs tracking-[0.18em] text-bone/45 uppercase"
+          />
           <span aria-hidden className="h-px flex-1 bg-bone/12" />
         </Reveal>
 
@@ -254,9 +256,10 @@ export default function Experience() {
       {/* Credentials */}
       <div className="mt-20 md:mt-24">
         <Reveal className="mb-10 flex items-center gap-4">
-          <span className="font-label text-xs tracking-[0.18em] text-bone/45 uppercase">
-            Credentials
-          </span>
+          <Scramble
+            text="Credentials"
+            className="font-label text-xs tracking-[0.18em] text-bone/45 uppercase"
+          />
           <span aria-hidden className="h-px flex-1 bg-bone/12" />
         </Reveal>
 
