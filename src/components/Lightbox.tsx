@@ -69,8 +69,12 @@ export default function Lightbox({
           role="dialog"
           aria-modal="true"
           aria-label={shot.alt}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          /* No opacity on the way in, deliberately. This overlay locks
+             scrolling, so if it were faded in by an animation that did not
+             run, the visitor would be left with a frozen page and nothing
+             on screen. Only the exit fades, where failing simply means the
+             overlay disappears instantly. */
+          initial={false}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25, ease: EASE_PITCH }}
           onClick={onClose}
@@ -80,8 +84,10 @@ export default function Lightbox({
             key={shot.src}
             src={shot.src}
             alt={shot.alt}
-            initial={{ scale: 0.94, y: 12 }}
-            animate={{ scale: 1, y: 0 }}
+            /* Transform only, so a stalled animation leaves the picture
+               visible at 94% rather than absent. */
+            initial={{ scale: 0.94 }}
+            animate={{ scale: 1 }}
             transition={{ duration: 0.4, ease: EASE_PITCH }}
             /* Stop the backdrop handler firing when the picture itself is
                clicked, or the viewer closes the moment you touch it. */
