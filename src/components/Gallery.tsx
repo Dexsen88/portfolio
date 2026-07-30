@@ -60,7 +60,7 @@ export default function Gallery({ shots }: { shots: Shot[] }) {
               aria-label={`View larger: ${shot.alt}`}
               whileHover={{ y: -4 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="group/shot relative block aspect-[4/3] w-full cursor-pointer overflow-hidden rounded-lg border border-bone/12 bg-panel"
+              className="panel-raised group/shot relative block aspect-[4/3] w-full cursor-pointer overflow-hidden rounded-lg border border-bone/10 bg-panel transition-colors duration-300 hover:border-ember/40"
             >
               {/* eslint-disable-next-line @next/next/no-img-element --
                   needs onError plus an attach-time check, which the Image
@@ -91,7 +91,10 @@ export default function Gallery({ shots }: { shots: Shot[] }) {
                 aria-hidden
                 className="pointer-events-none absolute inset-0 flex items-end justify-end p-3 opacity-0 transition-opacity duration-300 group-hover/shot:opacity-100"
               >
-                <span className="rounded-md bg-void/80 px-3 py-1.5 font-label text-[0.65rem] tracking-[0.16em] text-bone uppercase backdrop-blur-sm">
+                {/* Solid rather than backdrop-blurred: seven of these sit in
+                    the DOM at all times, and a backdrop filter composites
+                    even while the chip is hidden. */}
+                <span className="rounded-md bg-void/90 px-3 py-1.5 font-label text-[0.65rem] tracking-[0.16em] text-bone uppercase">
                   View
                 </span>
               </span>

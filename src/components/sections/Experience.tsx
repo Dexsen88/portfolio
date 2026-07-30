@@ -211,7 +211,7 @@ export default function Experience() {
             text="Education"
             className="font-label text-xs tracking-[0.18em] text-bone/45 uppercase"
           />
-          <span aria-hidden className="h-px flex-1 bg-bone/12" />
+          <span aria-hidden className="hairline h-px flex-1" />
         </Reveal>
 
         <Rail>
@@ -260,7 +260,7 @@ export default function Experience() {
             text="Credentials"
             className="font-label text-xs tracking-[0.18em] text-bone/45 uppercase"
           />
-          <span aria-hidden className="h-px flex-1 bg-bone/12" />
+          <span aria-hidden className="hairline h-px flex-1" />
         </Reveal>
 
         <div className="grid gap-10 md:grid-cols-2 md:gap-16">

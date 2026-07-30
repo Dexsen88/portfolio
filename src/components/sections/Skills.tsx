@@ -88,7 +88,7 @@ export default function Skills() {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-32 left-1/2 size-[38rem] -translate-x-1/2 rounded-full bg-ember/12 blur-[130px]"
+        className="glow-ember pointer-events-none absolute -top-32 left-1/2 size-[38rem] -translate-x-1/2 rounded-full opacity-60"
       />
 
       <div className="shell relative">

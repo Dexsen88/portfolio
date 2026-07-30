@@ -14,8 +14,8 @@ export default function Contact() {
       className="relative scroll-mt-24 overflow-hidden py-24 md:py-30"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-24 right-0 size-[36rem] rounded-full bg-ember/18 blur-[130px]" />
-        <div className="absolute -bottom-40 -left-20 size-[30rem] rounded-full bg-blood/45 blur-[120px]" />
+        <div className="glow-ember absolute -top-24 right-0 size-[36rem] rounded-full" />
+        <div className="glow-blood absolute -bottom-40 -left-20 size-[30rem] rounded-full" />
       </div>
 
       <div className="shell">
@@ -29,7 +29,7 @@ export default function Contact() {
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true, amount: 0.8 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="h-px flex-1 origin-left bg-gradient-to-r from-ember/70 to-bone/12"
+            className="h-px flex-1 origin-left bg-gradient-to-r from-ember/80 via-bone/14 to-transparent"
           />
           <Reveal distance={0} delay={0.1}>
             <Scramble
@@ -65,7 +65,7 @@ export default function Contact() {
               <Magnetic strength={0.3} className="mt-12 inline-block">
                 <a
                   href={`mailto:${contact.email}`}
-                  className="group inline-flex items-center gap-3 rounded-md bg-ember px-8 py-4 text-base font-semibold text-bone shadow-ember transition-colors duration-150 hover:bg-glow"
+                  className="btn-ember group inline-flex items-center gap-3 rounded-md bg-ember px-8 py-4 text-base font-semibold text-bone transition-colors duration-200 hover:bg-glow"
                 >
                   Send an email
                   <span

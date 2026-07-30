@@ -50,10 +50,10 @@ export default function Marquee() {
     mass: 0.4,
   });
 
-  const skew = useTransform(velocity, [-2500, 0, 2500], [7, 0, -7], {
+  const skew = useTransform(velocity, [-2500, 0, 2500], [5, 0, -5], {
     clamp: true,
   });
-  const shove = useTransform(velocity, [-2500, 0, 2500], [60, 0, -60], {
+  const shove = useTransform(velocity, [-2500, 0, 2500], [44, 0, -44], {
     clamp: true,
   });
 

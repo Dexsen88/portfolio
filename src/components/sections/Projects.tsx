@@ -84,10 +84,10 @@ function Card({ project, index }: { project: Project; index: number }) {
           }
           whileHover={{ y: -6 }}
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className={`group relative flex h-full flex-col overflow-hidden rounded-xl border p-8 will-change-transform md:p-10 ${
+          className={`panel-raised group relative flex h-full flex-col overflow-hidden rounded-xl border p-8 transition-colors duration-300 will-change-transform md:p-10 ${
             featured
-              ? "border-ember/40 bg-gradient-to-br from-blood/40 via-panel to-panel"
-              : "border-bone/12 bg-panel/50 hover:border-ember/40 hover:shadow-card"
+              ? "border-ember/35 bg-gradient-to-br from-blood/35 via-panel to-panel"
+              : "border-bone/10 bg-panel/60 hover:border-ember/35"
           }`}
         >
         <motion.div

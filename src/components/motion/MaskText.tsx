@@ -161,7 +161,11 @@ export function MaskChars({
               >
               <motion.span
                 variants={variants}
-                className="inline-block origin-bottom will-change-transform"
+                /* No will-change here on purpose. It was promoting every
+                   glyph to its own compositor layer, which across the hero
+                   and five headings is well over a hundred layers of GPU
+                   memory for one brief entrance. */
+                className="inline-block origin-bottom"
               >
                 {char === " " ? " " : char}
               </motion.span>

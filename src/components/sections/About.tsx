@@ -40,7 +40,7 @@ export default function About() {
             </Reveal>
 
             <Reveal delay={0.18}>
-              <div className="mt-8 overflow-hidden rounded-xl border border-bone/12 bg-panel/70 backdrop-blur-sm">
+              <div className="panel-raised mt-8 overflow-hidden rounded-xl border border-bone/10 bg-panel/70">
                 <dl className="divide-y divide-bone/10 px-7">
                   {[
                     { term: "Full name", detail: identity.fullName },

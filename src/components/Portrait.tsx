@@ -38,8 +38,8 @@ export default function Portrait() {
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 scale-125"
       >
-        <div className="absolute inset-0 rounded-full bg-ember/28 blur-[90px]" />
-        <div className="absolute inset-x-8 bottom-0 h-1/2 rounded-full bg-blood/50 blur-[70px]" />
+        <div className="glow-ember absolute inset-0 rounded-full" />
+        <div className="glow-blood absolute inset-x-8 bottom-0 h-1/2 rounded-full" />
       </div>
 
       <motion.div

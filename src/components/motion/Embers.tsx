@@ -2,8 +2,16 @@
 
 import { useEffect, useRef } from "react";
 
-const COUNT = 46;
+const COUNT = 26;
 const SPRITE_SIZE = 64;
+
+/**
+ * The canvas is rendered below screen resolution and stretched by CSS. These
+ * are diffuse blobs of light with no edges to soften, so the difference is
+ * invisible, while the pixels cleared and composited each frame drop by
+ * roughly three quarters versus a retina-resolution surface.
+ */
+const RESOLUTION_SCALE = 0.5;
 
 type Ember = {
   x: number;
@@ -63,14 +71,14 @@ export default function Embers() {
     });
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       width = window.innerWidth;
       height = window.innerHeight;
-      canvas.width = Math.floor(width * dpr);
-      canvas.height = Math.floor(height * dpr);
+      canvas.width = Math.floor(width * RESOLUTION_SCALE);
+      canvas.height = Math.floor(height * RESOLUTION_SCALE);
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // Draw in CSS pixels; the scale maps them onto the smaller buffer.
+      ctx.setTransform(RESOLUTION_SCALE, 0, 0, RESOLUTION_SCALE, 0, 0);
     };
 
     resize();

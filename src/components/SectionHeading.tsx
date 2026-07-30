@@ -35,7 +35,7 @@ export default function SectionHeading({
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true, amount: 0.8 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="h-px flex-1 origin-left bg-gradient-to-r from-ember/70 to-bone/12"
+          className="h-px flex-1 origin-left bg-gradient-to-r from-ember/80 via-bone/14 to-transparent"
         />
 
         <Reveal distance={0} delay={0.1}>

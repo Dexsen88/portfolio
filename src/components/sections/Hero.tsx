@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  motion,
-  useMotionTemplate,
-  useScroll,
-  useTransform,
-} from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { identity } from "@/content/profile";
 import Magnetic from "../motion/Magnetic";
@@ -24,10 +19,12 @@ export default function Hero() {
   const lightY = useTransform(scrollYProgress, [0, 1], ["0%", "38%"]);
   const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-  // Sinking away rather than just sliding: the hero recedes and defocuses.
-  const contentScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
-  const blurPx = useTransform(scrollYProgress, [0, 1], [0, 7]);
-  const contentBlur = useMotionTemplate`blur(${blurPx}px)`;
+  // Recedes as it leaves. There was a blur() here too, animated on every
+  // scroll frame across the whole hero including 180px type. Filters cannot
+  // be composited, so each frame re-rasterised the entire subtree, which was
+  // the single largest cause of scroll jank. Opacity, scale and translate
+  // are all GPU-composited and cost effectively nothing.
+  const contentScale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
 
   return (
     <section
@@ -41,8 +38,8 @@ export default function Hero() {
         style={{ y: lightY }}
         className="pointer-events-none absolute inset-0 -z-10"
       >
-        <div className="absolute -top-40 right-[-10%] size-[40rem] rounded-full bg-ember/20 blur-[130px]" />
-        <div className="absolute top-1/3 -left-40 size-[34rem] rounded-full bg-blood/45 blur-[120px]" />
+        <div className="glow-ember absolute -top-40 right-[-10%] size-[40rem] rounded-full" />
+        <div className="glow-blood absolute top-1/3 -left-40 size-[34rem] rounded-full" />
       </motion.div>
 
       <motion.div
@@ -50,7 +47,6 @@ export default function Hero() {
           y: contentY,
           opacity: contentOpacity,
           scale: contentScale,
-          filter: contentBlur,
         }}
         className="shell relative w-full"
       >
@@ -108,7 +104,7 @@ export default function Hero() {
             <Magnetic strength={0.3}>
               <a
                 href="#projects"
-                className="group inline-flex items-center gap-3 rounded-md bg-ember px-7 py-4 text-base font-semibold text-bone shadow-ember transition-colors duration-150 hover:bg-glow"
+                className="btn-ember group inline-flex items-center gap-3 rounded-md bg-ember px-7 py-4 text-base font-semibold text-bone transition-colors duration-200 hover:bg-glow"
               >
                 See the work
                 <span

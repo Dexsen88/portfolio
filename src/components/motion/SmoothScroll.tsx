@@ -11,11 +11,15 @@ import Lenis from "lenis";
 export default function SmoothScroll() {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.1,
-      // Matches --ease-pitch: a firm deceleration, no bounce at the end.
-      easing: (t: number) => 1 - Math.pow(1 - t, 4),
-      wheelMultiplier: 1,
-      touchMultiplier: 1.6,
+      // A touch longer with a softer tail: the page feels weighted rather
+      // than slippery, which is most of the "expensive" feeling in scroll.
+      duration: 1.25,
+      easing: (t: number) => 1 - Math.pow(1 - t, 5),
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.5,
+      // Native scrolling on touch. Hijacking it there costs frames on
+      // exactly the devices with the least to spare.
+      syncTouch: false,
     });
 
     let frame = 0;

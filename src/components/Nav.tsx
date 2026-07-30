@@ -51,7 +51,7 @@ export default function Nav() {
         <div
           className={`transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             condensed
-              ? "border-b border-bone/10 bg-void/70 backdrop-blur-xl"
+              ? "border-b border-bone/10 bg-void/80 backdrop-blur-md"
               : "border-b border-transparent"
           }`}
         >
