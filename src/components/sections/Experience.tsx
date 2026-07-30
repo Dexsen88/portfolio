@@ -8,6 +8,7 @@ import {
   experience,
   languages,
 } from "@/content/profile";
+import Gallery from "../Gallery";
 import SectionHeading from "../SectionHeading";
 import { Reveal } from "../motion/Reveal";
 
@@ -170,6 +171,10 @@ export default function Experience() {
                         </li>
                       ))}
                     </ul>
+
+                    {role.images && role.images.length > 0 && (
+                      <Gallery shots={role.images} />
+                    )}
                   </div>
                 </div>
               </Reveal>

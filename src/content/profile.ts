@@ -13,6 +13,18 @@ export type Social = {
   href: string;
 };
 
+export type Shot = {
+  /** Path inside /public. Missing files are skipped, not shown broken. */
+  src: string;
+  alt: string;
+  /**
+   * "contain" letterboxes the whole image against the panel, for
+   * certificates and badge cards that must not be cropped. Defaults to
+   * "cover", which fills the tile and is right for photographs.
+   */
+  fit?: "cover" | "contain";
+};
+
 export type Role = {
   company: string;
   title: string;
@@ -26,6 +38,7 @@ export type Role = {
   previously?: { title: string; period: string }[];
   /** Repos or write-ups produced during the role. */
   links?: { label: string; href: string }[];
+  images?: Shot[];
 };
 
 export type Study = {
@@ -43,8 +56,11 @@ export type Project = {
   year?: string;
   tags: string[];
   href?: string;
+  /** Link text for `href`. Defaults to "Live site". */
+  hrefLabel?: string;
   repo?: string;
   featured?: boolean;
+  images?: Shot[];
 };
 
 export type SkillGroup = {
@@ -138,6 +154,23 @@ export const experience: Role[] = [
       { title: "Community Success Team", period: "Aug 2025 to Dec 2025" },
       { title: "Voluntary Community Moderator", period: "Jul 2025 to Aug 2025" },
     ],
+    images: [
+      {
+        src: "/work/the5ers-funded-trader.jpg",
+        alt: "The5ers Officially Funded Trader certificate, High Stakes 60K, April 2025",
+        fit: "contain",
+      },
+      {
+        src: "/work/the5ers-quality-trade.jpg",
+        alt: "The5ers Quality Trade Score 90+ badge for XAUUSD, July 2026",
+        fit: "contain",
+      },
+      {
+        src: "/work/the5ers-payouts.jpg",
+        alt: "The5ers total payouts badge, June 2026",
+        fit: "contain",
+      },
+    ],
   },
   {
     company: "Alignerr",
@@ -167,6 +200,12 @@ export const experience: Role[] = [
       },
       { label: "Moodle", href: "https://github.com/Dexsen88/Moodle" },
     ],
+    images: [
+      {
+        src: "/work/blibli.jpg",
+        alt: "The security team at the Blibli and tiket.com office in Jakarta",
+      },
+    ],
   },
   {
     company: "Cyber Smart Network Asia, PT",
@@ -181,6 +220,12 @@ export const experience: Role[] = [
       "Optimised the algorithm behind the Dynamic Route Optimization and Visualization System using Python, HTML and JSON.",
     ],
     stack: ["Python", "Go", "Next.js", "Odoo", "ERP", "JSON", "HTML"],
+    images: [
+      {
+        src: "/work/cyber-smart-network-asia.jpg",
+        alt: "The intern team at the Cyber Smart Network Asia office",
+      },
+    ],
   },
   {
     company: "HIMTI BINUS University",
@@ -255,7 +300,19 @@ export const projects: Project[] = [
     description:
       "Co-founded and grew a gaming and gadgets retailer to 400 to 500 million IDR monthly turnover, moving 300 to 400 products to roughly 25,000 customers a month. Shaped the company vision, curated the product range and built the brand around customer satisfaction.",
     tags: ["Co-Founder", "E-commerce", "Sales", "Leadership", "Treasury"],
+    href: "https://www.instagram.com/sensegame.id/",
+    hrefLabel: "Instagram",
     featured: true,
+    images: [
+      {
+        src: "/work/sensegame-1.jpg",
+        alt: "SENSEGAME.ID team meeting",
+      },
+      {
+        src: "/work/sensegame-2.jpg",
+        alt: "Signing the SENSEGAME.ID partnership agreement",
+      },
+    ],
   },
   {
     name: "SENSEGOLF",
@@ -263,6 +320,8 @@ export const projects: Project[] = [
     description:
       "Founded a consignment store for golf equipment reaching 100 to 200 million IDR monthly turnover across 30 to 50 products sold online. Led operations, strategy and financial performance end to end.",
     tags: ["Founder", "E-commerce", "Operations", "Marketing"],
+    href: "https://www.instagram.com/sensegolf/",
+    hrefLabel: "Instagram",
   },
   {
     name: "DynamicRoute",

@@ -1,0 +1,77 @@
+"use client";
+
+import { motion } from "motion/react";
+import { useCallback, useState } from "react";
+import type { Shot } from "@/content/profile";
+
+/**
+ * Grid of supporting photographs for a role or venture.
+ *
+ * Any file that is missing is dropped from the grid rather than rendered
+ * broken, so content can be committed before the images are saved. As with
+ * the portrait, a 404 fires before hydration, so the decoded size is
+ * re-checked when each node attaches instead of relying on `onError` alone.
+ */
+export default function Gallery({ shots }: { shots: Shot[] }) {
+  const [broken, setBroken] = useState<string[]>([]);
+  const [loaded, setLoaded] = useState<string[]>([]);
+
+  const add = (setter: typeof setBroken) => (src: string) =>
+    setter((current) => (current.includes(src) ? current : [...current, src]));
+
+  const markBroken = useCallback((src: string) => add(setBroken)(src), []);
+  const markLoaded = useCallback((src: string) => add(setLoaded)(src), []);
+
+  const visible = shots.filter((shot) => !broken.includes(shot.src));
+  if (visible.length === 0) return null;
+
+  const single = visible.length === 1;
+
+  return (
+    <ul
+      className={`mt-8 grid gap-3 ${
+        single ? "max-w-xl" : "sm:grid-cols-2 lg:grid-cols-3"
+      }`}
+    >
+      {visible.map((shot) => (
+        <li key={shot.src}>
+          <motion.figure
+            whileHover={{ y: -4 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className={`group/shot relative overflow-hidden rounded-lg ${
+              loaded.includes(shot.src)
+                ? "aspect-[4/3] border border-bone/12 bg-panel"
+                : ""
+            }`}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element --
+                see the note above: this needs onError + an attach-time check,
+                which the Image optimiser does not give us. */}
+            <img
+              ref={(node) => {
+                if (!node?.complete) return;
+                if (node.naturalWidth === 0) markBroken(shot.src);
+                else markLoaded(shot.src);
+              }}
+              src={shot.src}
+              alt={shot.alt}
+              loading="lazy"
+              onLoad={() => markLoaded(shot.src)}
+              onError={() => markBroken(shot.src)}
+              className={`size-full transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/shot:scale-[1.03] ${
+                shot.fit === "contain" ? "object-contain p-2" : "object-cover"
+              }`}
+            />
+
+            {/* Ties the photographs into the red-lit page without washing
+                out faces or certificate text. */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 bg-ember/10 opacity-100 transition-opacity duration-300 group-hover/shot:opacity-0"
+            />
+          </motion.figure>
+        </li>
+      ))}
+    </ul>
+  );
+}

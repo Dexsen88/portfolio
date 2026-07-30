@@ -2,6 +2,7 @@
 
 import { motion, useMotionTemplate, useMotionValue } from "motion/react";
 import { projects, type Project } from "@/content/profile";
+import Gallery from "../Gallery";
 import SectionHeading from "../SectionHeading";
 import { RevealGroup, RevealItem } from "../motion/Reveal";
 
@@ -92,6 +93,10 @@ function Card({ project, index }: { project: Project; index: number }) {
             {project.tagline}
           </p>
           <p className="mt-5 max-w-[58ch] text-bone/65">{project.description}</p>
+
+          {project.images && project.images.length > 0 && (
+            <Gallery shots={project.images} />
+          )}
         </div>
 
         <ul className="relative mt-8 flex flex-wrap gap-2">
@@ -114,7 +119,7 @@ function Card({ project, index }: { project: Project; index: number }) {
                 rel="noreferrer noopener"
                 className="group/link inline-flex items-center gap-2 text-sm font-semibold text-bone transition-colors duration-150 hover:text-glow"
               >
-                Live site
+                {project.hrefLabel ?? "Live site"}
                 <ArrowIcon />
               </a>
             )}
