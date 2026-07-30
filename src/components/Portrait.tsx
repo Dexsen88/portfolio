@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { useCallback, useRef, useState } from "react";
 import { photo } from "@/content/profile";
 
@@ -15,7 +15,6 @@ import { photo } from "@/content/profile";
  */
 export default function Portrait() {
   const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
   const [failed, setFailed] = useState(false);
 
   const { scrollYProgress } = useScroll({
@@ -44,7 +43,7 @@ export default function Portrait() {
       </div>
 
       <motion.div
-        style={{ y: reduced ? 0 : y }}
+        style={{ y }}
         className="group relative aspect-square w-full"
       >
         {/* Fallback panel: if the file is missing you get a lit red plate,

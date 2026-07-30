@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 const COUNT = 46;
 const SPRITE_SIZE = 64;
@@ -23,15 +22,13 @@ type Ember = {
  * particle. Building a radial gradient per ember per frame is the obvious
  * way to write this and roughly fifty times more expensive.
  *
- * Sits between the ambient wash and the content, and stops entirely under
- * reduced motion or while the tab is hidden.
+ * Sits between the ambient wash and the content, and stops while the tab is
+ * hidden so it costs nothing in the background.
  */
 export default function Embers() {
-  const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    if (reduced) return;
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
@@ -128,9 +125,7 @@ export default function Embers() {
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [reduced]);
-
-  if (reduced) return null;
+  }, []);
 
   return (
     <canvas

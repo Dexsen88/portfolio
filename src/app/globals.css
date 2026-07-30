@@ -131,12 +131,6 @@
     border-radius: 2px;
   }
 
-  @media (hover: hover) and (pointer: fine) {
-    body[data-custom-cursor="on"],
-    body[data-custom-cursor="on"] * {
-      cursor: none;
-    }
-  }
 }
 
 /* ------------------------------------------------------------------
@@ -353,21 +347,13 @@
   );
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track,
-  .marquee-track-reverse,
-  .pulse-ring,
-  .curtain > span {
-    animation: none !important;
-  }
+/* No prefers-reduced-motion overrides, by explicit request: the animations
+   are meant to play for every visitor.
 
-  /* Skip the reveal entirely rather than sliding a full-screen panel */
-  .curtain {
-    animation: none !important;
-    visibility: hidden;
-  }
-
-  html:not(.lenis) {
-    scroll-behavior: auto;
-  }
-}
+   Note this is a deliberate accessibility trade-off. The usual reason to
+   honour the setting is vestibular discomfort from large moving areas. It
+   also used to hide the hero: the headline glyphs only became visible
+   because their reveal ran, so with the setting on, the entire headline
+   disappeared and left just the red full stop behind. Reveals now animate
+   transform only and never gate visibility, so nothing can vanish that way
+   again regardless of the setting. */

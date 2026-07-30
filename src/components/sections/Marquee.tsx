@@ -2,7 +2,6 @@
 
 import {
   motion,
-  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
@@ -43,7 +42,6 @@ function Track({ reverse = false }: { reverse?: boolean }) {
  * fast flick would snap the skew instead of easing it.
  */
 export default function Marquee() {
-  const reduced = useReducedMotion();
   const { scrollY } = useScroll();
   const rawVelocity = useVelocity(scrollY);
   const velocity = useSpring(rawVelocity, {
@@ -59,7 +57,7 @@ export default function Marquee() {
     clamp: true,
   });
 
-  const style = reduced ? undefined : { skewX: skew, x: shove };
+  const style = { skewX: skew, x: shove };
 
   return (
     <section

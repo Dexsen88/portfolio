@@ -6,13 +6,10 @@ import Lenis from "lenis";
 /**
  * Wraps the page in Lenis so wheel and anchor scrolling share the same
  * eased, slightly weighted feel as the rest of the motion system.
- * Opts out entirely when the visitor asks for reduced motion.
+ * Runs for every visitor, by explicit request.
  */
 export default function SmoothScroll() {
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reduced.matches) return;
-
     const lenis = new Lenis({
       duration: 1.1,
       // Matches --ease-pitch: a firm deceleration, no bounce at the end.

@@ -11,13 +11,11 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
  * re-renders anything. The position is eased toward the pointer so the light
  * trails slightly instead of snapping, which reads as a physical lamp.
  *
- * Skipped entirely on touch and under reduced motion, where `.ambience`
- * falls back to its static gradient position.
+ * Skipped on touch, where there is no cursor to follow and `.ambience` keeps
+ * its static gradient position.
  */
 export default function PointerLight() {
-  const finePointer = useMediaQuery("(hover: hover) and (pointer: fine)");
-  const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
-  const enabled = finePointer && !reduced;
+  const enabled = useMediaQuery("(hover: hover) and (pointer: fine)");
 
   useEffect(() => {
     if (!enabled) return;

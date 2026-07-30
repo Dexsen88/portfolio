@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import type { ReactNode } from "react";
 
 const EASE_PITCH = [0.16, 1, 0.3, 1] as const;
@@ -86,20 +86,22 @@ const charTrack: Variants = {
   }),
 };
 
+/**
+ * Transform only — no opacity, deliberately.
+ *
+ * The glyphs are concealed by the parent's clipping mask while they sit below
+ * the line, not by being transparent. That matters: an earlier version faded
+ * them in, so anything that stopped the animation left the whole headline
+ * invisible except its trailing full stop, which is plain markup. Visibility
+ * must never depend on an animation having run.
+ */
 const charVariants: Variants = {
-  hidden: { y: "115%", rotateX: -75, opacity: 0 },
+  hidden: { y: "115%", rotateX: -75 },
   shown: {
     y: "0%",
     rotateX: 0,
-    opacity: 1,
     transition: { type: "spring", stiffness: 220, damping: 24, mass: 0.9 },
   },
-};
-
-/** Reduced motion: no hinge, no travel, just a soft fade in place. */
-const charVariantsCalm: Variants = {
-  hidden: { opacity: 0 },
-  shown: { opacity: 1, transition: { duration: 0.4, ease: EASE_PITCH } },
 };
 
 type MaskCharsProps = {
@@ -121,8 +123,7 @@ export function MaskChars({
   delay = 0,
   stagger = 0.028,
 }: MaskCharsProps) {
-  const reduced = useReducedMotion();
-  const variants = reduced ? charVariantsCalm : charVariants;
+  const variants = charVariants;
 
   const activation =
     trigger === "mount"
@@ -136,7 +137,7 @@ export function MaskChars({
     <motion.span
       className={className}
       variants={charTrack}
-      custom={reduced ? 0.012 : stagger}
+      custom={stagger}
       initial="hidden"
       transition={{ delayChildren: delay }}
       {...activation}

@@ -3,23 +3,28 @@
 import { motion } from "motion/react";
 import { useCallback, useState } from "react";
 import type { Shot } from "@/content/profile";
+import Lightbox from "./Lightbox";
 
 /**
- * Grid of supporting photographs for a role or venture.
+ * Grid of supporting photographs for a role or venture. Tiles are buttons
+ * that open the image full screen.
  *
- * Each tile always reserves its 4:3 box. An earlier version only applied the
- * aspect ratio once the image had decoded, to keep missing files from leaving
- * empty frames — but combined with the clip-path reveal that deadlocked: a
- * lazy image inside a zero-height, fully-clipped tile is never fetched, so it
- * never loads, so the tile never gains height, so the reveal never fires.
- * Layout must not depend on load state.
+ * Two hard-won constraints:
  *
- * Files that 404 still drop out of the grid entirely. As with the portrait,
- * the error fires before hydration, so the decoded size is re-checked when
- * each node attaches rather than trusting `onError` alone.
+ *  - Tiles always reserve their 4:3 box. An earlier version only applied the
+ *    aspect ratio once the image had decoded, which deadlocked with the
+ *    reveal: a tile with no height is never intersected, so the reveal never
+ *    fires and the image never appears. Layout must not depend on load state.
+ *
+ *  - The entrance animates only transform, never opacity or clip-path. If the
+ *    reveal never runs the photo must still be plainly visible.
+ *
+ * Images are also deliberately eager. With loading="lazy" they were never
+ * fetched at all in a real browser, verified via naturalWidth staying 0.
  */
 export default function Gallery({ shots }: { shots: Shot[] }) {
   const [broken, setBroken] = useState<string[]>([]);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const markBroken = useCallback((src: string) => {
     setBroken((current) => (current.includes(src) ? current : [...current, src]));
@@ -31,74 +36,76 @@ export default function Gallery({ shots }: { shots: Shot[] }) {
   const single = visible.length === 1;
 
   return (
-    <ul
-      className={`mt-8 grid gap-3 ${
-        single ? "max-w-xl" : "sm:grid-cols-2 lg:grid-cols-3"
-      }`}
-    >
-      {visible.map((shot, index) => (
-        /* The entrance deliberately never touches opacity or clip-path.
-           A scroll-triggered reveal depends on IntersectionObserver firing,
-           and if it does not the tile must still be plainly visible — an
-           un-animated photo sitting 14px low is invisible as a defect,
-           whereas opacity:0 loses the image entirely. Earlier versions hid
-           these behind clip-path and opacity and shipped blank galleries.
-
-           The entrance is on the <li> and the hover on the <figure>, so the
-           two never fight over the same transform. */
-        <motion.li
-          key={shot.src}
-          initial={{ y: 14, scale: 0.97 }}
-          whileInView={{ y: 0, scale: 1 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{
-            duration: 0.7,
-            delay: index * 0.09,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-        >
-          <motion.figure
-            data-cursor-label="View"
-            whileHover={{ y: -4 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="group/shot relative aspect-[4/3] overflow-hidden rounded-lg border border-bone/12 bg-panel"
+    <>
+      <ul
+        className={`mt-8 grid gap-3 ${
+          single ? "max-w-xl" : "sm:grid-cols-2 lg:grid-cols-3"
+        }`}
+      >
+        {visible.map((shot, index) => (
+          <motion.li
+            key={shot.src}
+            initial={{ y: 14, scale: 0.97 }}
+            whileInView={{ y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{
+              duration: 0.7,
+              delay: index * 0.09,
+              ease: [0.16, 1, 0.3, 1],
+            }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element --
-                see the note above: this needs onError plus an attach-time
-                check, which the Image optimiser does not give us. */}
-            <img
-              ref={(node) => {
-                if (node?.complete && node.naturalWidth === 0) {
-                  markBroken(shot.src);
-                }
-              }}
-              src={shot.src}
-              alt={shot.alt}
-              /* NOT lazy, deliberately. With loading="lazy" these were never
-                 fetched at all: inspected live, every tile reported
-                 complete=false and naturalWidth=0 with opacity 1 and a
-                 correct box, even after being scrolled through. The portrait,
-                 which is eager, loads fine and is the control case.
-                 Seven CDN-cached WebPs totalling ~1.2MB is a cheaper price
-                 than a gallery that does not appear. Low priority and async
-                 decode keep them out of the critical path. */
-              decoding="async"
-              fetchPriority="low"
-              onError={() => markBroken(shot.src)}
-              className={`size-full transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/shot:scale-[1.03] ${
-                shot.fit === "contain" ? "object-contain p-2" : "object-cover"
-              }`}
-            />
+            <motion.button
+              type="button"
+              onClick={() => setOpenIndex(index)}
+              aria-label={`View larger: ${shot.alt}`}
+              whileHover={{ y: -4 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="group/shot relative block aspect-[4/3] w-full cursor-pointer overflow-hidden rounded-lg border border-bone/12 bg-panel"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element --
+                  needs onError plus an attach-time check, which the Image
+                  optimiser does not give us. */}
+              <img
+                ref={(node) => {
+                  if (node?.complete && node.naturalWidth === 0) {
+                    markBroken(shot.src);
+                  }
+                }}
+                src={shot.src}
+                alt={shot.alt}
+                decoding="async"
+                fetchPriority="low"
+                onError={() => markBroken(shot.src)}
+                className={`size-full transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/shot:scale-[1.03] ${
+                  shot.fit === "contain" ? "object-contain p-2" : "object-cover"
+                }`}
+              />
 
-            {/* Ties the photographs into the red-lit page without washing
-                out faces or certificate text. */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 bg-ember/10 opacity-100 transition-opacity duration-300 group-hover/shot:opacity-0"
-            />
-          </motion.figure>
-        </motion.li>
-      ))}
-    </ul>
+              {/* Red wash that lifts on hover, plus a visible affordance now
+                  that the custom cursor label is gone. */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 bg-ember/10 transition-opacity duration-300 group-hover/shot:opacity-0"
+              />
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 flex items-end justify-end p-3 opacity-0 transition-opacity duration-300 group-hover/shot:opacity-100"
+              >
+                <span className="rounded-md bg-void/80 px-3 py-1.5 font-label text-[0.65rem] tracking-[0.16em] text-bone uppercase backdrop-blur-sm">
+                  View
+                </span>
+              </span>
+            </motion.button>
+          </motion.li>
+        ))}
+      </ul>
+
+      <Lightbox
+        shots={visible}
+        index={openIndex}
+        onClose={() => setOpenIndex(null)}
+        onIndexChange={setOpenIndex}
+      />
+    </>
   );
 }

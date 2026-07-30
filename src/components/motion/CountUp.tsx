@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, useReducedMotion, type Variants } from "motion/react";
+import { motion, useInView, type Variants } from "motion/react";
 import { useRef } from "react";
 
 const EASE_PITCH = [0.16, 1, 0.3, 1] as const;
@@ -62,7 +62,6 @@ export default function CountUp({
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.4 });
-  const reduced = useReducedMotion();
 
   const formatted = value.toLocaleString("en-US");
   const chars = formatted.split("");
@@ -105,8 +104,8 @@ export default function CountUp({
             <Digit
               key={index}
               digit={Number(char)}
-              delay={reduced ? 0 : position * 0.08}
-              spin={!reduced && digitCount <= 6}
+              delay={position * 0.08}
+              spin={digitCount <= 6}
             />
           );
         })}
@@ -119,7 +118,7 @@ export default function CountUp({
           animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.4 }}
           transition={{
             duration: 0.5,
-            delay: reduced ? 0.2 : 0.9,
+            delay: 0.9,
             ease: EASE_PITCH,
           }}
           className="leading-none"

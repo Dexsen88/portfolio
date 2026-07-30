@@ -3,7 +3,6 @@
 import {
   motion,
   useMotionTemplate,
-  useReducedMotion,
   useScroll,
   useTransform,
 } from "motion/react";
@@ -16,8 +15,6 @@ const EASE_PITCH = [0.16, 1, 0.3, 1] as const;
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
-
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -41,7 +38,7 @@ export default function Hero() {
       {/* Off-camera red key light */}
       <motion.div
         aria-hidden
-        style={{ y: reduced ? 0 : lightY }}
+        style={{ y: lightY }}
         className="pointer-events-none absolute inset-0 -z-10"
       >
         <div className="absolute -top-40 right-[-10%] size-[40rem] rounded-full bg-ember/20 blur-[130px]" />
@@ -50,10 +47,10 @@ export default function Hero() {
 
       <motion.div
         style={{
-          y: reduced ? 0 : contentY,
-          opacity: reduced ? 1 : contentOpacity,
-          scale: reduced ? 1 : contentScale,
-          filter: reduced ? "none" : contentBlur,
+          y: contentY,
+          opacity: contentOpacity,
+          scale: contentScale,
+          filter: contentBlur,
         }}
         className="shell relative w-full"
       >

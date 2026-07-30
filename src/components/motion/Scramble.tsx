@@ -1,6 +1,6 @@
 "use client";
 
-import { useInView, useReducedMotion } from "motion/react";
+import { useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/\\<>[]{}*#%$";
@@ -26,11 +26,10 @@ export default function Scramble({
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.6 });
-  const reduced = useReducedMotion();
   const [display, setDisplay] = useState(text);
 
   useEffect(() => {
-    if (!inView || reduced) return;
+    if (!inView) return;
 
     const started = Date.now();
     const total = text.length * lockStep + 260;
@@ -56,12 +55,12 @@ export default function Scramble({
     }, tickMs);
 
     return () => window.clearInterval(interval);
-  }, [inView, reduced, text, lockStep, tickMs]);
+  }, [inView, text, lockStep, tickMs]);
 
   return (
     <span ref={ref} className={className}>
       <span className="sr-only">{text}</span>
-      <span aria-hidden>{reduced ? text : display}</span>
+      <span aria-hidden>{display}</span>
     </span>
   );
 }

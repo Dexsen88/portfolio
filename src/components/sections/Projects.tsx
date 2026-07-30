@@ -4,7 +4,6 @@ import {
   motion,
   useMotionTemplate,
   useMotionValue,
-  useReducedMotion,
   useSpring,
   useTransform,
 } from "motion/react";
@@ -37,11 +36,9 @@ const TILT = 9; // degrees at the very edge of the card
 
 function Card({ project, index }: { project: Project; index: number }) {
   const featured = Boolean(project.featured);
-  const reduced = useReducedMotion();
   // Touch drags fire pointermove too, which would tip the card while the
   // visitor is simply trying to scroll past it.
-  const finePointer = useMediaQuery("(hover: hover) and (pointer: fine)");
-  const tilt = finePointer && !reduced;
+  const tilt = useMediaQuery("(hover: hover) and (pointer: fine)");
 
   // Spotlight tracks the pointer across the card surface.
   const mouseX = useMotionValue(0);
@@ -80,7 +77,6 @@ function Card({ project, index }: { project: Project; index: number }) {
           flattened and reads as a plain skew. */}
       <div className="h-full [perspective:1200px]">
         <motion.article
-          data-cursor-label={project.href || project.repo ? "Open" : undefined}
           onPointerMove={handleMove}
           onPointerLeave={handleLeave}
           style={

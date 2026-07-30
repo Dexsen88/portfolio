@@ -2,7 +2,6 @@
 
 import {
   motion,
-  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
@@ -39,7 +38,6 @@ function Group({
   reverse: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
@@ -63,7 +61,7 @@ function Group({
         initial="hidden"
         whileInView="shown"
         viewport={{ once: true, amount: 0.3 }}
-        style={reduced ? undefined : { x: drift }}
+        style={{ x: drift }}
         className="flex flex-wrap gap-3 md:col-span-9"
       >
         {items.map((item) => (
