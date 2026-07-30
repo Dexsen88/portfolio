@@ -95,7 +95,7 @@ export default function Nav() {
                 className="group flex items-center gap-3"
                 aria-label={`${identity.name}, back to top`}
               >
-                <span className="grid size-10 place-items-center rounded-md bg-ember text-lg font-semibold text-bone shadow-ember transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-6">
+                <span className="grid size-9 place-items-center rounded-md bg-ember text-sm font-semibold text-bone transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-6">
                   {identity.name.charAt(0)}
                 </span>
                 <span className="text-lg font-semibold tracking-tight text-bone">

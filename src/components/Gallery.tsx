@@ -82,11 +82,12 @@ export default function Gallery({ shots }: { shots: Shot[] }) {
                 }`}
               />
 
-              {/* Red wash that lifts on hover, plus a visible affordance now
-                  that the custom cursor label is gone. */}
+              {/* A neutral scrim rather than the red one that used to sit
+                  here. Tinting every photograph made them look filtered, and
+                  a portfolio's photographs should be shown, not styled. */}
               <span
                 aria-hidden
-                className="pointer-events-none absolute inset-0 bg-ember/10 transition-opacity duration-300 group-hover/shot:opacity-0"
+                className="pointer-events-none absolute inset-0 bg-void/25 transition-opacity duration-300 group-hover/shot:opacity-0"
               />
               <span
                 aria-hidden

@@ -1,6 +1,5 @@
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
-import Embers from "@/components/motion/Embers";
 import MotionProvider from "@/components/motion/MotionProvider";
 import PointerLight from "@/components/motion/PointerLight";
 import ScrollProgress from "@/components/motion/ScrollProgress";
@@ -19,7 +18,6 @@ export default function Home() {
       <SmoothScroll />
       <ScrollProgress />
       <PointerLight />
-      <Embers />
       <Nav />
 
       <main>

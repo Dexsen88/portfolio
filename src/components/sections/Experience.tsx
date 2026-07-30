@@ -11,10 +11,9 @@ import {
 import Gallery from "../Gallery";
 import SectionHeading from "../SectionHeading";
 import { Reveal } from "../motion/Reveal";
-import Scramble from "../motion/Scramble";
 
 /**
- * Vertical rail whose red fill is drawn by scroll position, so the timeline
+ * Vertical rail whose fill is drawn by scroll position, so the timeline
  * appears to be traced as you read down it.
  */
 function Rail({ children }: { children: ReactNode }) {
@@ -38,7 +37,7 @@ function Rail({ children }: { children: ReactNode }) {
       <motion.span
         aria-hidden
         style={{ scaleY }}
-        className="absolute inset-y-0 left-0 hidden w-px origin-top bg-ember md:block"
+        className="absolute inset-y-0 left-0 hidden w-px origin-top bg-bone/30 md:block"
       />
       {children}
     </div>
@@ -50,42 +49,26 @@ function Rail({ children }: { children: ReactNode }) {
  * marker has to be pulled back by that same 3.5rem — otherwise it lands on the
  * padding edge and covers the first character of the date.
  */
-/**
- * Sits on the rail, not on the list item. The <ol> carries `md:pl-14`, so the
- * marker has to be pulled back by that same 3.5rem.
- *
- * Ignites as the scroll-drawn rail reaches it: dim and small until the row
- * enters view, then it snaps to full red with a glow ring behind it.
- */
 function Marker() {
   return (
     <motion.span
       aria-hidden
-      initial={{ scale: 0.4, backgroundColor: "#4a060e" }}
-      whileInView={{ scale: 1, backgroundColor: "#e11d2e" }}
+      initial={{ scale: 0.5 }}
+      whileInView={{ scale: 1 }}
       viewport={{ once: true, amount: 0.6 }}
-      transition={{ type: "spring", stiffness: 320, damping: 18 }}
-      className="absolute top-2.5 hidden size-3 -translate-x-1/2 rounded-full ring-4 ring-void md:-left-14 md:block"
-    >
-      <motion.span
-        aria-hidden
-        initial={{ opacity: 0, scale: 1 }}
-        whileInView={{ opacity: [0, 0.7, 0], scale: [1, 3.2, 3.2] }}
-        viewport={{ once: true, amount: 0.6 }}
-        transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute inset-0 rounded-full bg-ember"
-      />
-    </motion.span>
+      transition={{ type: "spring", stiffness: 320, damping: 24 }}
+      className="absolute top-[0.6em] hidden size-2 -translate-x-1/2 rounded-full bg-bone/35 ring-4 ring-void md:-left-14 md:block"
+    />
   );
 }
 
 export default function Experience() {
   return (
-    <section id="experience" className="shell scroll-mt-24 py-24 md:py-30">
+    <section id="experience" className="shell scroll-mt-24 py-32 md:py-44">
       <SectionHeading index="02" label="Experience" lines={["Where I've", "been"]} />
 
       <Rail>
-        <ol className="space-y-16 md:space-y-20 md:pl-14">
+        <ol className="space-y-20 md:space-y-28 md:pl-14">
           {experience.map((role, index) => (
             <li key={`${role.company}-${index}`} className="relative">
               <Marker />
@@ -93,7 +76,7 @@ export default function Experience() {
                 <div className="grid gap-6 md:grid-cols-12 md:gap-8">
                   <div className="md:col-span-3">
                     {role.period && (
-                      <p className="font-label text-xs tracking-[0.14em] text-glow uppercase">
+                      <p className="font-label text-xs tracking-[0.14em] text-bone/70 uppercase">
                         {role.period}
                       </p>
                     )}
@@ -108,7 +91,7 @@ export default function Experience() {
                     <h3 className="font-display text-title text-bone">
                       {role.company}
                     </h3>
-                    <p className="mt-1 text-lg font-semibold tracking-tight text-glow">
+                    <p className="mt-1.5 text-lg font-medium tracking-tight text-bone/60">
                       {role.title}
                     </p>
 
@@ -144,7 +127,7 @@ export default function Experience() {
                         >
                           <span
                             aria-hidden
-                            className="mt-2.5 size-1.5 shrink-0 rounded-full bg-ember"
+                            className="mt-[0.7em] size-1 shrink-0 rounded-full bg-bone/30"
                           />
                           <span>{highlight}</span>
                         </li>
@@ -207,10 +190,9 @@ export default function Experience() {
       {/* Education */}
       <div className="mt-24 md:mt-32">
         <Reveal className="mb-12 flex items-center gap-4">
-          <Scramble
-            text="Education"
-            className="font-label text-xs tracking-[0.18em] text-bone/45 uppercase"
-          />
+          <span className="font-label text-xs tracking-[0.2em] text-bone/40 uppercase">
+            Education
+          </span>
           <span aria-hidden className="hairline h-px flex-1" />
         </Reveal>
 
@@ -223,7 +205,7 @@ export default function Experience() {
                   <div className="grid gap-6 md:grid-cols-12 md:gap-8">
                     <div className="md:col-span-3">
                       {study.period && (
-                        <p className="font-label text-xs tracking-[0.14em] text-glow uppercase">
+                        <p className="font-label text-xs tracking-[0.14em] text-bone/70 uppercase">
                           {study.period}
                         </p>
                       )}
@@ -238,7 +220,7 @@ export default function Experience() {
                       <h3 className="text-2xl font-semibold tracking-[-0.02em] text-bone">
                         {study.school}
                       </h3>
-                      <p className="mt-1 text-base font-semibold tracking-tight text-glow">
+                      <p className="mt-1.5 text-base font-medium tracking-tight text-bone/60">
                         {study.qualification}
                       </p>
                       <p className="mt-4 max-w-[60ch] text-bone/65">
@@ -256,16 +238,15 @@ export default function Experience() {
       {/* Credentials */}
       <div className="mt-20 md:mt-24">
         <Reveal className="mb-10 flex items-center gap-4">
-          <Scramble
-            text="Credentials"
-            className="font-label text-xs tracking-[0.18em] text-bone/45 uppercase"
-          />
+          <span className="font-label text-xs tracking-[0.2em] text-bone/40 uppercase">
+            Credentials
+          </span>
           <span aria-hidden className="hairline h-px flex-1" />
         </Reveal>
 
         <div className="grid gap-10 md:grid-cols-2 md:gap-16">
           <Reveal>
-            <h3 className="font-label text-[0.7rem] tracking-[0.14em] text-glow uppercase">
+            <h3 className="font-label text-[0.7rem] tracking-[0.16em] text-bone/40 uppercase">
               Certifications
             </h3>
             <ul className="mt-4 border-t border-bone/12">
@@ -286,7 +267,7 @@ export default function Experience() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <h3 className="font-label text-[0.7rem] tracking-[0.14em] text-glow uppercase">
+            <h3 className="font-label text-[0.7rem] tracking-[0.16em] text-bone/40 uppercase">
               Languages
             </h3>
             <ul className="mt-4 border-t border-bone/12">

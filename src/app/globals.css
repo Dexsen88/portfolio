@@ -26,10 +26,16 @@
   --color-panel: #140a0c; /* raised cards, inverted sections */
   --color-bone: #f7f2f2; /* primary text */
 
-  /* Red lighting */
-  --color-ember: #e11d2e; /* fills, large type, the brand red */
-  --color-glow: #ff5a5f; /* small text and hover — clears AA on void */
-  --color-blood: #4a060e; /* deep red for gradients and glows */
+  /* Red lighting.
+
+     Used sparingly and on purpose. Red previously carried section indexes,
+     role titles, dates, list bullets, qualification lines, hover borders and
+     every glow, which left nothing for it to actually emphasise. Hierarchy
+     now comes from the tonal ramp below; red marks the few things that are
+     genuinely the point. */
+  --color-ember: #e11d2e; /* the accent: primary action, active state */
+  --color-glow: #ff5a5f; /* the rare small red text that must stay legible */
+  --color-blood: #4a060e; /* deep red, gradients only */
 
   /* Radius ladder: 1 / 10 / 16 / 24 */
   --radius-hair: 1px;
@@ -60,11 +66,11 @@
   --text-title--font-weight: 600;
 
   --text-body: 1.0625rem;
-  --text-body--line-height: 1.65;
+  --text-body--line-height: 1.7;
   --text-body--font-weight: 450;
 
-  --text-lead: clamp(1.15rem, 1.8vw, 1.4rem);
-  --text-lead--line-height: 1.6;
+  --text-lead: clamp(1.15rem, 1.8vw, 1.375rem);
+  --text-lead--line-height: 1.65;
 
   /* Motion: brisk, always decelerating */
   --ease-pitch: cubic-bezier(0.16, 1, 0.3, 1);

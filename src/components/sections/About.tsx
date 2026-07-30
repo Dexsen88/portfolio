@@ -6,12 +6,12 @@ import { Reveal, RevealGroup, RevealItem } from "../motion/Reveal";
 
 export default function About() {
   return (
-    <section id="about" className="shell scroll-mt-24 py-24 md:py-30">
+    <section id="about" className="shell scroll-mt-24 py-32 md:py-44">
       <SectionHeading index="01" label="About" lines={["The short", "version"]} />
 
-      <div className="grid gap-16 md:grid-cols-12 md:gap-12">
+      <div className="grid gap-20 md:grid-cols-12 md:gap-16">
         <div className="md:col-span-7">
-          <div className="space-y-8">
+          <div className="space-y-7">
             {about.paragraphs.map((paragraph, index) => (
               <Reveal key={index} delay={index * 0.08}>
                 <p className="text-lead text-bone/70">{paragraph}</p>
@@ -19,13 +19,13 @@ export default function About() {
             ))}
           </div>
 
-          <RevealGroup className="mt-14 grid grid-cols-1 gap-8 border-t border-bone/12 pt-10 sm:grid-cols-3 sm:gap-6">
+          <RevealGroup className="mt-16 grid grid-cols-1 gap-10 border-t border-bone/10 pt-12 sm:grid-cols-3 sm:gap-6">
             {about.stats.map((stat) => (
               <RevealItem key={stat.label}>
-                <p className="font-display text-title text-ember">
+                <p className="font-display text-title text-bone">
                   <CountUp value={stat.value} suffix={stat.suffix} />
                 </p>
-                <p className="mt-2 font-label text-[0.7rem] leading-relaxed tracking-[0.12em] text-bone/45 uppercase">
+                <p className="mt-3 font-label text-[0.7rem] leading-relaxed tracking-[0.14em] text-bone/40 uppercase">
                   {stat.label}
                 </p>
               </RevealItem>
@@ -77,7 +77,7 @@ export default function About() {
                     </span>
                     <span
                       aria-hidden
-                      className="text-glow transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
+                      className="text-bone/50 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
                     >
                       →
                     </span>
