@@ -5,12 +5,13 @@ import { contact, identity } from "@/content/profile";
 import Magnetic from "../motion/Magnetic";
 import { MaskChars } from "../motion/MaskText";
 import { Reveal } from "../motion/Reveal";
+import Scramble from "../motion/Scramble";
 
 export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative scroll-mt-24 overflow-hidden py-32 md:py-44"
+      className="relative scroll-mt-24 overflow-hidden py-24 md:py-30"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="glow-ember absolute -top-24 right-0 size-[36rem] rounded-full" />
@@ -18,23 +19,24 @@ export default function Contact() {
       </div>
 
       <div className="shell">
-        <div className="mb-10 flex items-baseline gap-5 md:mb-12">
+        <div className="mb-8 flex items-center gap-4">
           <Reveal distance={0}>
-            <span className="font-label text-xs tracking-[0.2em] text-ember">05</span>
-          </Reveal>
-          <Reveal distance={0} delay={0.06}>
-            <span className="font-label text-xs tracking-[0.2em] text-bone/40 uppercase">
-              Contact
-            </span>
+            <span className="font-label text-sm tracking-[0.08em] text-ember">05</span>
           </Reveal>
           <motion.span
             aria-hidden
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true, amount: 0.8 }}
-            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-            className="hairline h-px flex-1 origin-left"
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="h-px flex-1 origin-left bg-gradient-to-r from-ember/80 via-bone/14 to-transparent"
           />
+          <Reveal distance={0} delay={0.1}>
+            <Scramble
+              text="Contact"
+              className="font-label text-xs tracking-[0.18em] text-bone/45 uppercase"
+            />
+          </Reveal>
         </div>
 
         <h2 className="text-bloom font-display text-display text-bone">
@@ -96,7 +98,7 @@ export default function Contact() {
                         {social.label}
                       </span>
                       <span className="flex items-center gap-3">
-                        <span className="font-label text-xs tracking-[0.1em] text-bone/35">
+                        <span className="font-label text-xs tracking-[0.1em] text-bone/40 group-hover:text-glow">
                           {social.handle}
                         </span>
                         <span

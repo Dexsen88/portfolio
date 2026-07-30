@@ -152,10 +152,13 @@ export function MaskChars({
             {/* Spaces are swapped for U+00A0 below: a normal space collapses
                 to nothing once each glyph becomes an inline-block. */}
             {line.split("").map((char, charIndex) => (
-              /* Plain wrapper. This used to lift and redden each glyph on
-                 hover, which turned reading the headline into a light show
-                 and undermined the one place red is supposed to land. */
-              <span key={charIndex} className="inline-block">
+              /* Two nested spans on purpose. Motion owns the inner
+                 transform for the reveal, so the hover lift has to live on
+                 an outer element or the inline style it writes wins. */
+              <span
+                key={charIndex}
+                className="inline-block transition-[transform,color] duration-300 ease-out hover:-translate-y-[0.07em] hover:text-ember"
+              >
               <motion.span
                 variants={variants}
                 /* No will-change here on purpose. It was promoting every

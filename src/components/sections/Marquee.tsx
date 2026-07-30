@@ -12,10 +12,10 @@ function Track({ reverse = false }: { reverse?: boolean }) {
     >
       {words.map((word, index) => (
         <span key={index} className="flex items-center">
-          <span className="px-7 font-label text-xs tracking-[0.2em] whitespace-nowrap text-bone/45 uppercase">
+          <span className="px-8 text-3xl font-semibold tracking-[-0.03em] whitespace-nowrap text-bone md:text-4xl">
             {word}
           </span>
-          <span aria-hidden className="text-[0.6rem] text-bone/25">
+          <span aria-hidden className="text-lg text-ember">
             ✦
           </span>
         </span>
@@ -38,18 +38,19 @@ export default function Marquee() {
   return (
     <section
       aria-hidden
-      className="marquee-host relative overflow-hidden border-y border-bone/8 py-5"
+      className="marquee-host relative overflow-hidden border-y border-bone/10 bg-panel/60 py-10 md:py-14"
     >
-      {/* Fades into the page at both edges instead of being cut off by them. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-void via-transparent to-void"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ember/12 via-transparent to-ember/12"
       />
-      {/* One row, small, quiet. This was two rows of 36px display type with a
-          red wash across it, which competed with the headline directly above
-          for no reason: it is a list of keywords. */}
-      <div className="flex overflow-hidden">
-        <Track />
+      <div className="relative">
+        <div className="flex overflow-hidden">
+          <Track />
+        </div>
+        <div className="mt-3 flex overflow-hidden opacity-40">
+          <Track reverse />
+        </div>
       </div>
     </section>
   );

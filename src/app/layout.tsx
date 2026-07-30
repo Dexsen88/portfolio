@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Curtain from "@/components/motion/Curtain";
 import { identity, seo } from "@/content/profile";
 
 /* No webfonts. Type is the native system UI stack, declared in globals.css —
@@ -47,6 +48,7 @@ export default function RootLayout({
           <style>{`[style*="opacity"],[style*="clip-path"]{opacity:1!important;clip-path:none!important;transform:none!important}`}</style>
         </noscript>
         <div aria-hidden className="ambience" />
+        <Curtain />
         {children}
       </body>
     </html>

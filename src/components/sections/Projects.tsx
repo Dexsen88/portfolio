@@ -97,7 +97,7 @@ function Card({ project, index }: { project: Project; index: number }) {
         />
 
         <div className="relative flex items-center justify-between gap-4">
-          <span className="font-label text-xs tracking-[0.2em] text-bone/35">
+          <span className="font-label text-sm tracking-[0.08em] text-ember">
             {String(index + 1).padStart(2, "0")}
           </span>
           <div className="flex items-center gap-3">
@@ -125,7 +125,7 @@ function Card({ project, index }: { project: Project; index: number }) {
             {project.name}
           </h3>
           <p
-            className={`mt-2 font-medium tracking-tight text-bone/55 ${
+            className={`mt-1 font-semibold tracking-tight text-glow ${
               featured ? "text-lg" : "text-base"
             }`}
           >
@@ -142,7 +142,7 @@ function Card({ project, index }: { project: Project; index: number }) {
           {project.tags.map((tag) => (
             <li
               key={tag}
-              className="rounded-md border border-bone/12 px-3 py-1.5 font-label text-[0.7rem] tracking-[0.1em] text-bone/50 uppercase"
+              className="rounded-md border border-bone/15 px-3 py-1.5 font-label text-[0.7rem] tracking-[0.08em] text-bone/55 uppercase"
             >
               {tag}
             </li>
@@ -156,7 +156,7 @@ function Card({ project, index }: { project: Project; index: number }) {
                 href={project.href}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="group/link inline-flex items-center gap-2 text-sm font-semibold text-bone transition-colors duration-200 hover:text-glow"
+                className="group/link inline-flex items-center gap-2 text-sm font-semibold text-bone transition-colors duration-150 hover:text-glow"
               >
                 {project.hrefLabel ?? "Live site"}
                 <ArrowIcon />
@@ -183,7 +183,7 @@ function Card({ project, index }: { project: Project; index: number }) {
 
 export default function Projects() {
   return (
-    <section id="projects" className="shell scroll-mt-24 py-32 md:py-44">
+    <section id="projects" className="shell scroll-mt-24 py-24 md:py-30">
       <SectionHeading
         index="03"
         label="Projects"
@@ -191,7 +191,7 @@ export default function Projects() {
         lead="Two businesses I started, a routing system I helped build, and a campaign I ran. The common thread is owning something end to end."
       />
 
-      <RevealGroup className="grid gap-5 md:grid-cols-2 md:gap-6" stagger={0.1}>
+      <RevealGroup className="grid gap-6 md:grid-cols-2" stagger={0.1}>
         {projects.map((project, index) => (
           <Card key={project.name} project={project} index={index} />
         ))}

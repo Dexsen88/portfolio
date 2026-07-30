@@ -54,9 +54,7 @@ function Group({
       className="grid gap-5 border-b border-bone/12 py-8 md:grid-cols-12 md:gap-8 md:py-10"
     >
       <Reveal className="md:col-span-3" distance={16}>
-        <h3 className="font-label text-xs tracking-[0.16em] text-bone/40 uppercase">
-          {group}
-        </h3>
+        <h3 className="text-xl font-semibold tracking-tight text-glow">{group}</h3>
       </Reveal>
 
       <motion.ul
@@ -73,7 +71,7 @@ function Group({
             variants={pillVariants}
             whileHover={{ y: -3, scale: 1.04 }}
             transition={{ type: "spring", stiffness: 420, damping: 22 }}
-            className="rounded-md border border-bone/12 px-4 py-2 text-sm font-medium text-bone/75 transition-colors duration-200 hover:border-bone/30 hover:text-bone"
+            className="rounded-md border border-bone/15 px-4 py-2 text-sm font-medium text-bone/85 transition-colors duration-150 hover:border-ember hover:bg-ember hover:text-bone"
           >
             {item}
           </motion.li>
@@ -87,7 +85,7 @@ export default function Skills() {
   return (
     <section
       id="skills"
-      className="relative scroll-mt-24 overflow-hidden border-y border-bone/10 bg-panel/40 py-32 md:py-44"
+      className="relative scroll-mt-24 overflow-hidden border-y border-bone/10 bg-panel/40 py-24 md:py-30"
     >
       <div
         aria-hidden

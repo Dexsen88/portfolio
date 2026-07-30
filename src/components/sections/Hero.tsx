@@ -57,20 +57,17 @@ export default function Hero() {
           transition={{ duration: 0.6, ease: EASE_PITCH }}
           className="mb-8 flex flex-wrap items-center gap-x-5 gap-y-3"
         >
-          <span className="font-label text-xs tracking-[0.2em] text-bone/40 uppercase">
+          <span className="font-label text-xs tracking-[0.18em] text-bone/50 uppercase">
             {identity.eyebrow}
           </span>
 
           {identity.availableForWork && (
-            /* The one place red earns its keep above the fold: a single lit
-               dot. This used to be a bordered, tinted, pulsing pill with red
-               text, which shouted louder than the headline it sat above. */
-            <span className="inline-flex items-center gap-2.5">
-              <span className="relative grid size-1.5 place-items-center">
-                <span className="pulse-ring absolute size-1.5 rounded-full bg-ember" />
-                <span className="relative size-1.5 rounded-full bg-ember" />
+            <span className="inline-flex items-center gap-2.5 rounded-md border border-ember/30 bg-ember/8 px-3 py-1.5">
+              <span className="relative grid size-2 place-items-center">
+                <span className="pulse-ring absolute size-2 rounded-full bg-glow" />
+                <span className="relative size-2 rounded-full bg-glow" />
               </span>
-              <span className="font-label text-[0.7rem] tracking-[0.16em] text-bone/50 uppercase">
+              <span className="font-label text-[0.7rem] tracking-[0.14em] text-glow uppercase">
                 {identity.availabilityNote}
               </span>
             </span>
@@ -93,7 +90,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.55, ease: EASE_PITCH }}
-            className="max-w-[44ch] text-lead text-bone/55 md:col-span-7"
+            className="max-w-[46ch] text-lead text-bone/65 md:col-span-7"
           >
             {identity.intro}
           </motion.p>
@@ -143,10 +140,10 @@ export default function Hero() {
             { term: "Based in", detail: identity.location },
           ].map((item) => (
             <div key={item.term}>
-              <dt className="font-label text-[0.7rem] tracking-[0.18em] text-bone/35 uppercase">
+              <dt className="font-label text-[0.7rem] tracking-[0.16em] text-bone/40 uppercase">
                 {item.term}
               </dt>
-              <dd className="mt-2 text-base font-medium tracking-tight text-bone/85">
+              <dd className="mt-1 text-lg font-semibold tracking-tight text-bone">
                 {item.detail}
               </dd>
             </div>
@@ -169,7 +166,7 @@ export default function Hero() {
           <motion.span
             animate={{ x: ["-100%", "100%"] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute inset-y-0 w-1/2 bg-bone/50"
+            className="absolute inset-y-0 w-1/2 bg-ember"
           />
         </span>
       </motion.div>
